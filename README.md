@@ -1,2 +1,2 @@
-# TheMovieLister
+# Th eMovie Lister
 Android application that enables users to create and share lists about movies. Maybe you've got a movie festival going and want let everybody know the films you'll be showing, well The Movie Lister is for you. Maybe you want to make a list of your favorite movies and share it with your friends, well The Movie Lister is also for you. Maybe you just want to list every single movie you've watched in your entire life, well I think you've got it.
