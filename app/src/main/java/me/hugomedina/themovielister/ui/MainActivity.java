@@ -9,15 +9,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
-import java.util.List;
-
 import me.hugomedina.themovielister.R;
-import me.hugomedina.themovielister.objects.parse.Movie;
+import me.hugomedina.themovielister.objects.parse.BelongsTo;
+import me.hugomedina.themovielister.objects.parse.MovieList;
+import me.hugomedina.themovielister.objects.parse.SubscribedTo;
 import me.hugomedina.themovielister.service.GenericAsyncTask;
 import me.hugomedina.themovielister.service.MovieDbUrl;
 
@@ -41,20 +40,43 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Movie movie = new Movie();
-                movie.setTitle(title.getText().toString());
-                movie.setTMDBId(title2.getText().toString());
-                movie.saveInBackground(new SaveCallback() {
+                MovieList movieList = new MovieList();
+                movieList.setName("My First List");
+                movieList.setUser(ParseUser.getCurrentUser());
+
+                SubscribedTo belongsTo = new SubscribedTo();
+                belongsTo.setMovieList(movieList);
+                belongsTo.setUser(ParseUser.getCurrentUser());
+
+                belongsTo.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
-                        if (e==null)
-                        Toast.makeText(MainActivity.this, "Saved!", Toast.LENGTH_SHORT).show();
+                        if(e == null)
+                        {
+                            Toast.makeText(MainActivity.this, "List created!", Toast.LENGTH_SHORT).show();
+                        }
                         else
+                        {
+                            Toast.makeText(MainActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
                             e.printStackTrace();
+                        }
                     }
                 });
-
-            }
+//
+//                Movie movie = new Movie();
+//                movie.setTitle(title.getText().toString());
+//                movie.setTMDBId(title2.getText().toString());
+//                movie.saveInBackground(new SaveCallback() {
+//                    @Override
+//                    public void done(ParseException e) {
+//                        if (e==null)
+//                        Toast.makeText(MainActivity.this, "Saved!", Toast.LENGTH_SHORT).show();
+//                        else
+//                            e.printStackTrace();
+//                    }
+          //      });
+//
+           }
         });
 
         Button load = (Button) findViewById(R.id.button2);
@@ -64,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
 //                ParseQuery<Movie> query = ParseQuery.getQuery("Movie");
 //                query.findInBackground(new FindCallback<Movie>() {
 //                    @Override
-//                    public void done(List<Movie> objects, ParseException e) {
+//                    public void done(MovieList<Movie> objects, ParseException e) {
 //                        if (e == null)
 //                        {
 //                            Toast.makeText(MainActivity.this, "Size: " + String.valueOf(objects.size()), Toast.LENGTH_SHORT).show();
@@ -75,8 +97,8 @@ public class MainActivity extends AppCompatActivity {
 //                        }
 //                    }
 //                });
-                MovieDbUrl movieDbUrl = new MovieDbUrl();
-                String actorQuery = movieDbUrl.getActorQuery("John");
+               // MovieDbUrl movieDbUrl = new MovieDbUrl();
+                String actorQuery = MovieDbUrl.getActorQuery("John");
                 GenericAsyncTask downloader = new GenericAsyncTask(MainActivity.this, new ActorActivity().getClass());
                 downloader.execute(actorQuery);
             }
