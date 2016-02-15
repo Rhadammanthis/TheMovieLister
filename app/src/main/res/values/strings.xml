@@ -3,4 +3,9 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
+    //Activity and Fragment toolbar
+    <string name="title_list">My Lists</string>
+
+    <string name="system_loading">Loading</string>
 </resources>

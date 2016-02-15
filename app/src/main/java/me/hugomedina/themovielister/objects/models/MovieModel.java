@@ -4,6 +4,10 @@ package me.hugomedina.themovielister.objects.models;
  * Created by Hugo on 2/11/2016.
  */
 public class MovieModel {
+    public MovieModel(String title, String posterPath) {
+        this.title = title;
+        this.posterPath = posterPath;
+    }
 
     public int getId() {
         return id;

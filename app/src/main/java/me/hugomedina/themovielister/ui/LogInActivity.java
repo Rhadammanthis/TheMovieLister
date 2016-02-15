@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.parse.GetCallback;
+import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
@@ -20,8 +21,11 @@ import me.hugomedina.themovielister.MovieListerApplication;
 import me.hugomedina.themovielister.R;
 import me.hugomedina.themovielister.objects.parse.User;
 import me.hugomedina.themovielister.util.CustomDialog;
+import me.hugomedina.themovielister.util.CustomDialogProgress;
 
 public class LogInActivity extends AppCompatActivity {
+
+    private CustomDialogProgress mProgress;
 
     private EditText textUsername;
     private EditText textPassword;
@@ -62,20 +66,36 @@ public class LogInActivity extends AppCompatActivity {
             }
         });
 
-        if(ParseUser.getCurrentUser() != null) {
-
-            if(MovieListerApplication.isOnline) {
-                ParseUser.getCurrentUser().fetchInBackground(new GetCallback<User>() {
-
+        Button buttonLogIn = (Button) findViewById(R.id.logIn_logIn);
+        buttonLogIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mProgress.show();
+                ParseUser.logInInBackground(textUsername.getText().toString(), textPassword.getText().toString(), new LogInCallback() {
                     @Override
-                    public void done(User user, ParseException e) {
-                        Intent intent = new Intent(LogInActivity.this,MainActivity.class);
-                        startActivity(intent);
-                        finish();
+                    public void done(ParseUser user, ParseException e) {
+                        mProgress.dismiss();
+                        if(e == null)
+                        {
+                            Intent i = new Intent(LogInActivity.this, MainActivity.class);
+                            startActivity(i);
+                            finish();
+                        }
+                        else
+                        {
+                            new CustomDialog.Builder(LogInActivity.this)
+                                    .setTitle("Error")
+                                    .setMessage("User not found")
+                                    .setPositiveButtom("Accept", null)
+                                    .create()
+                                    .show();
+                        }
                     }
                 });
             }
-        }
+        });
+
+
     }
 
     public void initDialogs()
@@ -85,6 +105,12 @@ public class LogInActivity extends AppCompatActivity {
                 .setTitle("The Movie Lister")
                 .setMessage("User created!")
                 .setPositiveButtom("Accept", null)
+                .create();
+
+        mProgress = new CustomDialogProgress.Builder(LogInActivity.this)
+                .setMessage(R.string.system_loading)
+                .setProgress(true, 0)
+                .setCancelable(false)
                 .create();
     }
 }
