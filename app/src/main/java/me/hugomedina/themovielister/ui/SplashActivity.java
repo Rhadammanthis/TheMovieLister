@@ -35,13 +35,13 @@ public class SplashActivity extends AppCompatActivity {
 
                                 @Override
                                 public void done(User user, ParseException e) {
-                                    Intent iInicio = new Intent(SplashActivity.this, ListActivity.class);
+                                    Intent iInicio = new Intent(SplashActivity.this, MainActivity.class);
                                     startActivity(iInicio);
                                     finish();
                                 }
                             });
                         } else {
-                            Intent iInicio = new Intent(SplashActivity.this, ListActivity.class);
+                            Intent iInicio = new Intent(SplashActivity.this, MainActivity.class);
                             startActivity(iInicio);
                             finish();
                         }

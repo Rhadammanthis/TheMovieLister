@@ -30,6 +30,10 @@ public class MovieDbUrl {
         return url + "search/person?api_key=" + API_KEY + "&query=" + nameToSearch + "&sort_by=popularity";
     }
 
+    public static String getMovieQuery(String nameToSearch){
+        return url + "search/movie?api_key=" + API_KEY + "&query=" + nameToSearch + "&sort_by=popularity";
+    }
+
     public static String getFilmographyQuery(int actorId){
         return url + "person/" + actorId + "?api_key=" + API_KEY + "&append_to_response=credits";
     }

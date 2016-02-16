@@ -98,8 +98,13 @@ public class MainActivity extends AppCompatActivity {
 //                    }
 //                });
                // MovieDbUrl movieDbUrl = new MovieDbUrl();
-                String actorQuery = MovieDbUrl.getActorQuery("John");
-                GenericAsyncTask downloader = new GenericAsyncTask(MainActivity.this, new ActorActivity().getClass());
+
+//                String actorQuery = MovieDbUrl.getActorQuery("John");
+//                GenericAsyncTask downloader = new GenericAsyncTask(MainActivity.this, new ActorActivity().getClass());
+//                downloader.execute(actorQuery);
+
+                String actorQuery = MovieDbUrl.getMovieQuery(title.getText().toString());
+                GenericAsyncTask downloader = new GenericAsyncTask(MainActivity.this, new SearchActivity().getClass());
                 downloader.execute(actorQuery);
             }
         });

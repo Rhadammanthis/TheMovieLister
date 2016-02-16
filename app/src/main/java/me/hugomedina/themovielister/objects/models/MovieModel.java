@@ -9,6 +9,11 @@ public class MovieModel {
         this.posterPath = posterPath;
     }
 
+    public MovieModel()
+    {
+
+    }
+
     public int getId() {
         return id;
     }
