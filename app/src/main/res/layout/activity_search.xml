@@ -19,6 +19,8 @@
             android:layout_width="0dp"
             android:layout_weight="0.7"
             android:layout_height="wrap_content"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
             android:id="@+id/text_to_search" />
 
         <Button

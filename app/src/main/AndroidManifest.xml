@@ -13,10 +13,14 @@
         android:theme="@style/Theme.TheMovieLister">
         <activity
             android:name=".ui.MainActivity"
-            android:label="@string/app_name" />
-        <activity android:name=".ui.ActorActivity" />
-        <activity android:name=".ui.LogInActivity" />
-        <activity android:name=".ui.SplashActivity">
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.ActorActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.LogInActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.SplashActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,8 +35,10 @@
             android:name="com.parse.CLIENT_KEY"
             android:value="HYYzN5ZcINm4LkrFiz7zyEpk7QNQOGbEVgq0rR6y" />
 
-        <activity android:name=".ui.ListActivity" />
-        <activity android:name=".ui.SearchActivity"></activity>
+        <activity android:name=".ui.ListActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ui.SearchActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

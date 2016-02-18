@@ -1,5 +1,6 @@
 package me.hugomedina.themovielister.ui;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,11 +15,8 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import me.hugomedina.themovielister.R;
-import me.hugomedina.themovielister.objects.parse.BelongsTo;
 import me.hugomedina.themovielister.objects.parse.MovieList;
 import me.hugomedina.themovielister.objects.parse.SubscribedTo;
-import me.hugomedina.themovielister.service.GenericAsyncTask;
-import me.hugomedina.themovielister.service.MovieDbUrl;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -100,12 +98,13 @@ public class MainActivity extends AppCompatActivity {
                // MovieDbUrl movieDbUrl = new MovieDbUrl();
 
 //                String actorQuery = MovieDbUrl.getActorQuery("John");
-//                GenericAsyncTask downloader = new GenericAsyncTask(MainActivity.this, new ActorActivity().getClass());
+//                MyGenericAsyncTask downloader = new MyGenericAsyncTask(MainActivity.this, new ActorActivity().getClass());
 //                downloader.execute(actorQuery);
 
-                String actorQuery = MovieDbUrl.getMovieQuery(title.getText().toString());
-                GenericAsyncTask downloader = new GenericAsyncTask(MainActivity.this, new SearchActivity().getClass());
-                downloader.execute(actorQuery);
+//                String actorQuery = MovieDbUrl.getMovieQuery(title.getText().toString());
+//                MyGenericAsyncTask downloader = new MyGenericAsyncTask(MainActivity.this, new SearchActivity().getClass());
+//                downloader.execute(actorQuery);
+                startActivity(new Intent(MainActivity.this, SearchActivity.class));
             }
         });
     }
