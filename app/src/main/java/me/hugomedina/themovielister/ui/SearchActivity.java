@@ -1,13 +1,18 @@
 package me.hugomedina.themovielister.ui;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -43,12 +48,18 @@ public class SearchActivity extends Activity implements GenericAsyncTask.OnFinis
             @Override
             public void onClick(View view) {
 
-                mDialog.show();
-                new GenericAsyncTask(
-                        SearchActivity.this,
-                        searchText.getText().toString(),
-                        "Loading",
-                        SearchActivity.this).execute();
+                performSearch(view);
+            }
+        });
+
+        searchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    performSearch(v);
+                    return true;
+                }
+                return false;
             }
         });
 //
@@ -73,6 +84,26 @@ public class SearchActivity extends Activity implements GenericAsyncTask.OnFinis
 
 //        Button searchButton = (Button) findViewById(R.id.button_search);
 
+    }
+
+    /**
+     * Launch AsynkTask to query the text in the TextEdit
+     * @param view View to close soft keyboard from
+     */
+    private void performSearch(View view)
+    {
+        view = SearchActivity.this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+
+        mDialog.show();
+        new GenericAsyncTask(
+                SearchActivity.this,
+                searchText.getText().toString(),
+                "Loading",
+                SearchActivity.this).execute();
     }
 
     private void initComponents()
