@@ -12,4 +12,18 @@
         <item name="windowActionModeOverlay">true</item>
     </style>
 
+    <style name="Theme.TheMovieLister.AppCompat" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/orange_primary</item>
+        <item name="colorPrimaryDark">@color/orange_primary_dark</item>
+        <item name="colorAccent">@color/blue_accent</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:editTextColor">@android:color/white</item>
+        <item name="android:textColorHint">@android:color/white</item>
+        <item name="android:actionOverflowButtonStyle">@style/MyActionButtonOverflow</item>
+    </style>
+
+    <style name="MyActionButtonOverflow" parent="android:style/Widget.Holo.ActionButton.Overflow">
+        <item name="android:src">@drawable/ic_arrow_white_36</item>
+    </style>
+
 </resources>

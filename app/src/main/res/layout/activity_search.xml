@@ -7,33 +7,9 @@
     android:orientation="vertical"
     tools:context="me.hugomedina.themovielister.ui.SearchActivity">
 
-    <include android:id="@+id/toolbar"
-        layout="@layout/toolbar" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <EditText
-            android:layout_width="0dp"
-            android:layout_weight="0.7"
-            android:layout_height="wrap_content"
-            android:imeOptions="actionSearch"
-            android:inputType="text"
-            android:id="@+id/text_to_search" />
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_weight="0.3"
-            android:layout_height="wrap_content"
-            android:text="New Button"
-            android:id="@+id/button_search" />
-    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler"
-        android:layout_marginTop="16dip"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>

@@ -1,17 +1,28 @@
 package me.hugomedina.themovielister.ui;
 
 import android.app.Activity;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,12 +40,13 @@ import me.hugomedina.themovielister.service.MyGenericAsyncTask;
 import me.hugomedina.themovielister.service.MovieDbUrl;
 import me.hugomedina.themovielister.util.CustomDialogProgress;
 
-public class SearchActivity extends Activity implements GenericAsyncTask.OnFinishTask{
+public class SearchActivity extends AppCompatActivity implements GenericAsyncTask.OnFinishTask{
 
     private ArrayList<MovieModel> movies;
     private Button searchButton;
     private EditText searchText;
     private CustomDialogProgress mDialog;
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,72 +56,86 @@ public class SearchActivity extends Activity implements GenericAsyncTask.OnFinis
         initComponents();
         initDialog();
 
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+//
+//        searchButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                performSearch(view);
+//            }
+//        });
+//
+//        searchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//            @Override
+//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+//                    performSearch(v);
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
 
-                performSearch(view);
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_search, menu);
+        searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                performSearch(query);
+                searchView.clearFocus();
+                return false;
             }
-        });
 
-        searchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    performSearch(v);
-                    return true;
-                }
+            public boolean onQueryTextChange(String newText) {
                 return false;
             }
         });
-//
-//        Intent intent = getIntent();
-//
-//        if (intent != null) {
-//
-//            String jsonData = intent.getExtras().getString("jsonData");
-//            getActorsFrom(jsonData);
-//
-//            RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.recycler);
-//            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-//            mRecyclerView.setLayoutManager(layoutManager);
-//            mRecyclerView.setHasFixedSize(true);
-//
-//            RecyclerView.Adapter mAdapter = new SearchAdapter(movies, this);
-//            mRecyclerView.setAdapter(mAdapter);
-//
-//        }
 
+        return true;
+    }
 
-
-//        Button searchButton = (Button) findViewById(R.id.button_search);
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            super.onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     /**
      * Launch AsynkTask to query the text in the TextEdit
-     * @param view View to close soft keyboard from
+     * @param query Text to lookup for
      */
-    private void performSearch(View view)
+    private void performSearch(String query)
     {
-        view = SearchActivity.this.getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
 
         mDialog.show();
         new GenericAsyncTask(
                 SearchActivity.this,
-                searchText.getText().toString(),
+                query,
                 "Loading",
                 SearchActivity.this).execute();
     }
 
     private void initComponents()
     {
-        searchButton = (Button) findViewById(R.id.button_search);
-        searchText = (EditText) findViewById(R.id.text_to_search);
+        //searchButton = (Button) findViewById(R.id.button_search);
+        //searchText = (EditText) findViewById(R.id.text_to_search);
+
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        getSupportActionBar().setTitle(R.string.title_search);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void initDialog()
