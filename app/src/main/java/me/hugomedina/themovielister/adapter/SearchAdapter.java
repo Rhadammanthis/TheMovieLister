@@ -1,6 +1,7 @@
 package me.hugomedina.themovielister.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import me.hugomedina.themovielister.R;
+import me.hugomedina.themovielister.linker.OnItemClicked;
 import me.hugomedina.themovielister.objects.models.MovieModel;
 
 /**
@@ -22,11 +24,13 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     public ArrayList<MovieModel> dataSet;
     private Context context;
+    private OnItemClicked clickListener;
 
-    public SearchAdapter(ArrayList<MovieModel> dataSet, Context context)
+    public SearchAdapter(ArrayList<MovieModel> dataSet, Context context, OnItemClicked clickListener)
     {
         this.dataSet = dataSet;
         this.context = context;
+        this.clickListener = clickListener;
     }
 
     @Override
@@ -39,11 +43,18 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(ViewHolderSearch holder, int position) {
+    public void onBindViewHolder(ViewHolderSearch holder, final int position) {
 
         holder.itemTitle.setText(dataSet.get(position).getTitle());
         Picasso.with(context).load("https://image.tmdb.org/t/p/w300" +
                 dataSet.get(position).getPosterPath()).into(holder.itemImage);
+
+        holder.itemCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clickListener.onMovieClicked(dataSet.get(position));
+            }
+        });
 
     }
 
@@ -56,11 +67,13 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         // each data item is just a string in this case
         public TextView itemTitle;
         public ImageView itemImage;
+        public CardView itemCard;
 
         public ViewHolderSearch(View v) {
             super(v);
             itemTitle = (TextView) v.findViewById(R.id.title_search);
             itemImage = (ImageView) v.findViewById(R.id.poster_search);
+            itemCard = (CardView) v.findViewById(R.id.item_search_card);
 
         }
     }

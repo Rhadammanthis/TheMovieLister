@@ -34,13 +34,15 @@ import java.util.ArrayList;
 
 import me.hugomedina.themovielister.R;
 import me.hugomedina.themovielister.adapter.SearchAdapter;
+import me.hugomedina.themovielister.linker.OnItemClicked;
 import me.hugomedina.themovielister.objects.models.MovieModel;
 import me.hugomedina.themovielister.service.GenericAsyncTask;
 import me.hugomedina.themovielister.service.MyGenericAsyncTask;
 import me.hugomedina.themovielister.service.MovieDbUrl;
 import me.hugomedina.themovielister.util.CustomDialogProgress;
+import me.hugomedina.themovielister.util.JSONParser;
 
-public class SearchActivity extends AppCompatActivity implements GenericAsyncTask.OnFinishTask{
+public class SearchActivity extends AppCompatActivity implements GenericAsyncTask.OnFinishTask, OnItemClicked{
 
     private ArrayList<MovieModel> movies;
     private Button searchButton;
@@ -55,26 +57,6 @@ public class SearchActivity extends AppCompatActivity implements GenericAsyncTas
 
         initComponents();
         initDialog();
-
-//
-//        searchButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                performSearch(view);
-//            }
-//        });
-//
-//        searchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//            @Override
-//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-//                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-//                    performSearch(v);
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
 
 
     }
@@ -119,21 +101,13 @@ public class SearchActivity extends AppCompatActivity implements GenericAsyncTas
      */
     private void performSearch(String query)
     {
-
         mDialog.show();
-        new GenericAsyncTask(
-                SearchActivity.this,
-                query,
-                "Loading",
-                SearchActivity.this).execute();
+        GenericAsyncTask.newInstanceSearch(query,SearchActivity.this,1).execute();
     }
 
     private void initComponents()
     {
-        //searchButton = (Button) findViewById(R.id.button_search);
-        //searchText = (EditText) findViewById(R.id.text_to_search);
 
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         getSupportActionBar().setTitle(R.string.title_search);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -142,65 +116,34 @@ public class SearchActivity extends AppCompatActivity implements GenericAsyncTas
     {
         mDialog = new CustomDialogProgress
                 .Builder(SearchActivity.this)
+                .setMessage(R.string.system_loading)
                 .setProgress(true, 0)
                 .create();
     }
 
-    private void showNotFoundNotification() {
-        Toast.makeText(this,
-                "Sorry we couldn't find anything, please try again",
-                Toast.LENGTH_SHORT).
-                show();
-    }
 
     @Override
     public void finishTask(String s) {
 
         mDialog.dismiss();
-        getActorsFrom(s);
 
-        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.recycler);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setHasFixedSize(true);
+        movies = new JSONParser(this).getMovies(s);
 
-        RecyclerView.Adapter mAdapter = new SearchAdapter(movies, this);
-        mRecyclerView.setAdapter(mAdapter);
+        if(movies != null) {
+            RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.recycler);
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+            mRecyclerView.setLayoutManager(layoutManager);
+            mRecyclerView.setHasFixedSize(true);
 
-    }
-
-
-    private void getActorsFrom(String rawJSON) {
-        JSONObject results = null;
-
-        try {
-            results = new JSONObject(rawJSON);
-            JSONArray data = results.getJSONArray("results");
-
-            int dataSize = data.length();
-
-            if (dataSize == 0) {
-                showNotFoundNotification();
-                super.onBackPressed();
-            }
-
-            movies = new ArrayList<>(dataSize);
-
-            for (int i = 0; i < dataSize; i++) {
-                JSONObject jsonActor = data.getJSONObject(i);
-
-                MovieModel tempActor = new MovieModel();
-                tempActor.setId(jsonActor.getInt("id"));
-                tempActor.setTitle(jsonActor.getString("original_title"));
-                tempActor.setPosterPath(jsonActor.getString("poster_path"));
-
-                movies.add(tempActor);
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-
+            RecyclerView.Adapter mAdapter = new SearchAdapter(movies, this, this);
+            mRecyclerView.setAdapter(mAdapter);
         }
     }
 
+    @Override
+    public void onMovieClicked(MovieModel movie) {
+        Intent intent = new Intent(SearchActivity.this, MovieActivity.class);
+        intent.putExtra("movie", movie);
+        startActivity(intent);
+    }
 }

@@ -1,9 +1,11 @@
 package me.hugomedina.themovielister.objects.models;
 
+import java.io.Serializable;
+
 /**
  * Created by Hugo on 2/11/2016.
  */
-public class MovieModel {
+public class MovieModel implements Serializable {
     public MovieModel(String title, String posterPath) {
         this.title = title;
         this.posterPath = posterPath;

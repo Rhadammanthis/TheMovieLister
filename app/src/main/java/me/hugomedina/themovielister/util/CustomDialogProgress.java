@@ -196,7 +196,7 @@ public class CustomDialogProgress {
 		 * @param message el mensaje
 		 * @return Builder
 		 */
-		public Builder setMessage(@IdRes int message){
+		public Builder setMessage(int message){
 			if(lollipop){
 				builderA.setMessage(context.getString(message));
 			}else{

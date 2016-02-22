@@ -9,7 +9,7 @@
     android:layout_height="72dip"
     android:clickable="true"
     android:foreground="?selectableItemBackground"
-    android:id="@+id/item_program_card">
+    android:id="@+id/item_search_card">
 
 
     <LinearLayout
