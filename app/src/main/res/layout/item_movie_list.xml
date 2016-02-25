@@ -18,14 +18,11 @@
         android:orientation="vertical">
 
         <ImageView
-            android:layout_marginTop="8dip"
-            android:layout_marginLeft="16dip"
-            android:layout_marginRight="16dip"
-            android:scaleType="centerCrop"
+            android:paddingTop="8dip"
+            android:scaleType="centerInside"
             android:id="@+id/item_movie_image"
             android:layout_width="match_parent"
-            android:layout_weight="0.7"
-            android:layout_height="0dp"/>
+            android:layout_height="wrap_content"/>
 
 
         <TextView
@@ -35,8 +32,7 @@
             android:layout_marginTop="8dip"
             android:layout_gravity="center_vertical"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.3"
+            android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Large Text"
             android:textSize="14sp"

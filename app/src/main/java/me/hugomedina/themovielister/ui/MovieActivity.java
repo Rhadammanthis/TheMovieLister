@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,11 +31,14 @@ public class MovieActivity extends Activity {
 
     MovieModel movie;
     MovieList movieList;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie);
+
+        initToolbar();
 
         Intent i = getIntent();
         movie = (MovieModel) i.getSerializableExtra("movie");
@@ -61,6 +65,7 @@ public class MovieActivity extends Activity {
                             Movie movieParse = new Movie();
                             movieParse.setTMDBId(String.valueOf(movie.getId()));
                             movieParse.setTitle(movie.getTitle());
+                            movieParse.setPosterPath(movie.getPosterPath());
 
                             BelongsTo belongsTo = new BelongsTo();
                             belongsTo.setMovieList(objects.get(0));
@@ -96,6 +101,24 @@ public class MovieActivity extends Activity {
 //                });
 //
 
+            }
+        });
+    }
+
+    private void initToolbar()
+    {
+//        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+//        collapsingToolbarLayout.setTitle("Meditación del día");
+//        collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(this,android.R.color.transparent));
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Movie");
+        toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        // toolbar.inflateMenu(R.menu.menu_font);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
     }

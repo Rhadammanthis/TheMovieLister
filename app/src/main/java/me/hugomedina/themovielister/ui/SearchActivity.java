@@ -1,44 +1,25 @@
 package me.hugomedina.themovielister.ui;
 
-import android.app.Activity;
 import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 import me.hugomedina.themovielister.R;
 import me.hugomedina.themovielister.adapter.SearchAdapter;
-import me.hugomedina.themovielister.linker.OnItemClicked;
+import me.hugomedina.themovielister.interfaces.OnItemClicked;
 import me.hugomedina.themovielister.objects.models.MovieModel;
 import me.hugomedina.themovielister.service.GenericAsyncTask;
-import me.hugomedina.themovielister.service.MyGenericAsyncTask;
-import me.hugomedina.themovielister.service.MovieDbUrl;
 import me.hugomedina.themovielister.util.CustomDialogProgress;
 import me.hugomedina.themovielister.util.JSONParser;
 

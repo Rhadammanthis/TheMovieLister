@@ -14,7 +14,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import me.hugomedina.themovielister.R;
-import me.hugomedina.themovielister.linker.OnItemClicked;
+import me.hugomedina.themovielister.interfaces.OnItemClicked;
 import me.hugomedina.themovielister.objects.models.MovieModel;
 
 /**

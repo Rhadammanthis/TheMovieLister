@@ -1,4 +1,4 @@
-package me.hugomedina.themovielister.linker;
+package me.hugomedina.themovielister.interfaces;
 
 import me.hugomedina.themovielister.objects.models.MovieModel;
 

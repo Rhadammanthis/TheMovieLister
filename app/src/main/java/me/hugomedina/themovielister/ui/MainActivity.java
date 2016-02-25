@@ -38,42 +38,31 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                MovieList movieList = new MovieList();
-                movieList.setName("My First List");
-                movieList.setUser(ParseUser.getCurrentUser());
+                startActivity(new Intent(MainActivity.this, ListActivity.class));
 
-                SubscribedTo belongsTo = new SubscribedTo();
-                belongsTo.setMovieList(movieList);
-                belongsTo.setUser(ParseUser.getCurrentUser());
-
-                belongsTo.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if(e == null)
-                        {
-                            Toast.makeText(MainActivity.this, "List created!", Toast.LENGTH_SHORT).show();
-                        }
-                        else
-                        {
-                            Toast.makeText(MainActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
-                            e.printStackTrace();
-                        }
-                    }
-                });
+//                MovieList movieList = new MovieList();
+//                movieList.setName("My First List");
+//                movieList.setUser(ParseUser.getCurrentUser());
 //
-//                Movie movie = new Movie();
-//                movie.setTitle(title.getText().toString());
-//                movie.setTMDBId(title2.getText().toString());
-//                movie.saveInBackground(new SaveCallback() {
+//                SubscribedTo belongsTo = new SubscribedTo();
+//                belongsTo.setMovieList(movieList);
+//                belongsTo.setUser(ParseUser.getCurrentUser());
+//
+//                belongsTo.saveInBackground(new SaveCallback() {
 //                    @Override
 //                    public void done(ParseException e) {
-//                        if (e==null)
-//                        Toast.makeText(MainActivity.this, "Saved!", Toast.LENGTH_SHORT).show();
+//                        if(e == null)
+//                        {
+//                            Toast.makeText(MainActivity.this, "List created!", Toast.LENGTH_SHORT).show();
+//                        }
 //                        else
+//                        {
+//                            Toast.makeText(MainActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
 //                            e.printStackTrace();
+//                        }
 //                    }
-          //      });
-//
+//                });
+
            }
         });
 

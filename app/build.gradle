@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "me.hugomedina.themovielister"
-        minSdkVersion 15
+        minSdkVersion 17
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -28,7 +28,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':movingimageview')
     compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.android.support:design:22.2.0'
+    compile 'com.android.support:design:23.1.1'
     compile 'com.android.support:cardview-v7:23.1.1'
     compile 'com.android.support:recyclerview-v7:23.1.1'
     compile 'de.hdodenhof:circleimageview:2.0.0'

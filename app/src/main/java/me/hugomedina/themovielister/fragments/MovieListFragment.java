@@ -20,12 +20,16 @@ import java.util.ArrayList;
 
 import me.hugomedina.themovielister.R;
 import me.hugomedina.themovielister.adapter.MovieListAdapter;
+import me.hugomedina.themovielister.business.MovieDAO;
+import me.hugomedina.themovielister.interfaces.OnQueryFinished;
 import me.hugomedina.themovielister.objects.models.MovieModel;
 
 /**
  * Created by Hugo on 2/14/2016.
  */
-public class MovieListFragment extends Fragment {
+public class MovieListFragment extends Fragment implements OnQueryFinished {
+
+    private RecyclerView mRecyclerView;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -33,32 +37,33 @@ public class MovieListFragment extends Fragment {
 
         View mainView = inflater.inflate(R.layout.fragment_movie_list, container, false);
 
-        CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) mainView.findViewById(R.id.collapsing_toolbar);
-        collapsingToolbarLayout.setTitle("My List");
-        collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(getActivity(),android.R.color.transparent));
-
         Toolbar toolbar = (Toolbar) mainView.findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.title_list);
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
 
-        RecyclerView mRecyclerView = (RecyclerView) mainView.findViewById(R.id.recycler);
-        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(3, OrientationHelper.VERTICAL);
+        mRecyclerView = (RecyclerView) mainView.findViewById(R.id.recycler);
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, OrientationHelper.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
 
-        ArrayList<MovieModel> dataSet = new ArrayList<>();
+        new MovieDAO(getActivity(), MovieListFragment.this).getAllMovies();
 
-        dataSet.add(new MovieModel("Miller's Crossing", "/gmUAhNHY4bxQzgHjXci5JAW7u62.jpg"));
-        dataSet.add(new MovieModel("Insomnia","/82smBAmO8by2dwrYL5kIVCJ8uFJ.jpg"));
-        dataSet.add(new MovieModel("Breaking and Entering", "/tH4pFx2e8oxTKTn1DrZv8eqJACn.jpg"));
-        dataSet.add(new MovieModel("Miller's Crossing", "/gmUAhNHY4bxQzgHjXci5JAW7u62.jpg"));
-        dataSet.add(new MovieModel("Insomnia","/82smBAmO8by2dwrYL5kIVCJ8uFJ.jpg"));
-        dataSet.add(new MovieModel("Breaking and Entering", "/tH4pFx2e8oxTKTn1DrZv8eqJACn.jpg"));
+//        dataSet.add(new MovieModel("Miller's Crossing", "/gmUAhNHY4bxQzgHjXci5JAW7u62.jpg"));
+//        dataSet.add(new MovieModel("Insomnia","/82smBAmO8by2dwrYL5kIVCJ8uFJ.jpg"));
+//        dataSet.add(new MovieModel("Breaking and Entering", "/tH4pFx2e8oxTKTn1DrZv8eqJACn.jpg"));
+//        dataSet.add(new MovieModel("Miller's Crossing", "/gmUAhNHY4bxQzgHjXci5JAW7u62.jpg"));
+//        dataSet.add(new MovieModel("Insomnia","/82smBAmO8by2dwrYL5kIVCJ8uFJ.jpg"));
+//        dataSet.add(new MovieModel("Breaking and Entering", "/tH4pFx2e8oxTKTn1DrZv8eqJACn.jpg"));
 
-        MovieListAdapter mAdapter = new MovieListAdapter(dataSet, getActivity());
-        mRecyclerView.setAdapter(mAdapter);
+
 
         return mainView;
+    }
+
+    @Override
+    public void onMovieQueryFinished(ArrayList<MovieModel> dataSet) {
+        MovieListAdapter mAdapter = new MovieListAdapter(dataSet, getActivity());
+        mRecyclerView.setAdapter(mAdapter);
     }
 }
