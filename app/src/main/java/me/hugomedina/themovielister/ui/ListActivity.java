@@ -25,15 +25,15 @@ public class ListActivity extends BaseActivity {
 
         initToolbar();
 
-        addFragment(new MovieListFragment(), "movieListFragment");
+        //addFragment(new MovieListFragment(), "movieListFragment");
     }
 
-    private void addFragment(Fragment fragment, String tag){
-        getFragmentManager()
-                .beginTransaction()
-                .add(R.id.container, fragment, tag)
-                .commit();
-    }
+//    private void addFragment(android.support.v4.app.Fragment fragment, String tag){
+//        getFragmentManager()
+//                .beginTransaction()
+//                .add(R.id.container, fragment, tag)
+//                .commit();
+//    }
 
     @Override
     public void initToolbar() {

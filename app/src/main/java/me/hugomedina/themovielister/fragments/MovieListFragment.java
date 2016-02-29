@@ -27,7 +27,7 @@ import me.hugomedina.themovielister.objects.models.MovieModel;
 /**
  * Created by Hugo on 2/14/2016.
  */
-public class MovieListFragment extends Fragment implements OnQueryFinished {
+public class MovieListFragment extends android.support.v4.app.Fragment implements OnQueryFinished {
 
     private RecyclerView mRecyclerView;
 
@@ -37,10 +37,10 @@ public class MovieListFragment extends Fragment implements OnQueryFinished {
 
         View mainView = inflater.inflate(R.layout.fragment_movie_list, container, false);
 
-        Toolbar toolbar = (Toolbar) mainView.findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.title_list);
-        toolbar.setTitleTextColor(Color.WHITE);
-        toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+//        Toolbar toolbar = (Toolbar) mainView.findViewById(R.id.toolbar);
+//        toolbar.setTitle(R.string.title_list);
+//        toolbar.setTitleTextColor(Color.WHITE);
+//        toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
 
         mRecyclerView = (RecyclerView) mainView.findViewById(R.id.recycler);
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, OrientationHelper.VERTICAL);

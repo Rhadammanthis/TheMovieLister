@@ -1,8 +1,13 @@
 package me.hugomedina.themovielister.ui;
 
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +20,7 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import me.hugomedina.themovielister.R;
+import me.hugomedina.themovielister.adapter.MainPagerAdapter;
 import me.hugomedina.themovielister.objects.parse.MovieList;
 import me.hugomedina.themovielister.objects.parse.SubscribedTo;
 
@@ -25,77 +31,94 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initToolbar();
+
+        ViewPager mPager = (ViewPager) findViewById(R.id.main_pager);
+        PagerAdapter mPagerAdapter = new MainPagerAdapter(getSupportFragmentManager());
+        mPager.setAdapter(mPagerAdapter);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mPager);
+
+        FloatingActionButton fabSearch = (FloatingActionButton) findViewById(R.id.fab);
+        fabSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, SearchActivity.class));
+            }
+        });
+
 //        if(MovieListerApplication.isOnline)
 //            Toast.makeText(MainActivity.this, "On line!", Toast.LENGTH_SHORT).show();
 //        else
 //            Toast.makeText(MainActivity.this, "Off line :(", Toast.LENGTH_SHORT).show();
 
-        final EditText title = (EditText) findViewById(R.id.editText);
-        final EditText title2 = (EditText) findViewById(R.id.editText2);
+//        final EditText title = (EditText) findViewById(R.id.editText);
+//        final EditText title2 = (EditText) findViewById(R.id.editText2);
 
-        Button save = (Button) findViewById(R.id.button);
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                startActivity(new Intent(MainActivity.this, ListActivity.class));
-
-//                MovieList movieList = new MovieList();
-//                movieList.setName("My First List");
-//                movieList.setUser(ParseUser.getCurrentUser());
+//        Button save = (Button) findViewById(R.id.button);
+//        save.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
 //
-//                SubscribedTo belongsTo = new SubscribedTo();
-//                belongsTo.setMovieList(movieList);
-//                belongsTo.setUser(ParseUser.getCurrentUser());
+//                startActivity(new Intent(MainActivity.this, ListActivity.class));
 //
-//                belongsTo.saveInBackground(new SaveCallback() {
-//                    @Override
-//                    public void done(ParseException e) {
-//                        if(e == null)
-//                        {
-//                            Toast.makeText(MainActivity.this, "List created!", Toast.LENGTH_SHORT).show();
-//                        }
-//                        else
-//                        {
-//                            Toast.makeText(MainActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                });
-
-           }
-        });
-
-        Button load = (Button) findViewById(R.id.button2);
-        load.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                ParseQuery<Movie> query = ParseQuery.getQuery("Movie");
-//                query.findInBackground(new FindCallback<Movie>() {
-//                    @Override
-//                    public void done(MovieList<Movie> objects, ParseException e) {
-//                        if (e == null)
-//                        {
-//                            Toast.makeText(MainActivity.this, "Size: " + String.valueOf(objects.size()), Toast.LENGTH_SHORT).show();
+////                MovieList movieList = new MovieList();
+////                movieList.setName("My First List");
+////                movieList.setUser(ParseUser.getCurrentUser());
+////
+////                SubscribedTo belongsTo = new SubscribedTo();
+////                belongsTo.setMovieList(movieList);
+////                belongsTo.setUser(ParseUser.getCurrentUser());
+////
+////                belongsTo.saveInBackground(new SaveCallback() {
+////                    @Override
+////                    public void done(ParseException e) {
+////                        if(e == null)
+////                        {
+////                            Toast.makeText(MainActivity.this, "List created!", Toast.LENGTH_SHORT).show();
+////                        }
+////                        else
+////                        {
+////                            Toast.makeText(MainActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+////                            e.printStackTrace();
+////                        }
+////                    }
+////                });
 //
-//                            if(objects.size() > 0)
-//                                title.setText(objects.get(0).getTitle());
-//                                title2.setText(objects.get(0).getTMDBId());
-//                        }
-//                    }
-//                });
-               // MovieDbUrl movieDbUrl = new MovieDbUrl();
+//           }
+//        });
 
-//                String actorQuery = MovieDbUrl.getActorQuery("John");
-//                MyGenericAsyncTask downloader = new MyGenericAsyncTask(MainActivity.this, new ActorActivity().getClass());
-//                downloader.execute(actorQuery);
-
-//                String actorQuery = MovieDbUrl.getMovieQuery(title.getText().toString());
-//                MyGenericAsyncTask downloader = new MyGenericAsyncTask(MainActivity.this, new SearchActivity().getClass());
-//                downloader.execute(actorQuery);
-                startActivity(new Intent(MainActivity.this, SearchActivity.class));
-            }
-        });
+//        Button load = (Button) findViewById(R.id.button2);
+//        load.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+////                ParseQuery<Movie> query = ParseQuery.getQuery("Movie");
+////                query.findInBackground(new FindCallback<Movie>() {
+////                    @Override
+////                    public void done(MovieList<Movie> objects, ParseException e) {
+////                        if (e == null)
+////                        {
+////                            Toast.makeText(MainActivity.this, "Size: " + String.valueOf(objects.size()), Toast.LENGTH_SHORT).show();
+////
+////                            if(objects.size() > 0)
+////                                title.setText(objects.get(0).getTitle());
+////                                title2.setText(objects.get(0).getTMDBId());
+////                        }
+////                    }
+////                });
+//               // MovieDbUrl movieDbUrl = new MovieDbUrl();
+//
+////                String actorQuery = MovieDbUrl.getActorQuery("John");
+////                MyGenericAsyncTask downloader = new MyGenericAsyncTask(MainActivity.this, new ActorActivity().getClass());
+////                downloader.execute(actorQuery);
+//
+////                String actorQuery = MovieDbUrl.getMovieQuery(title.getText().toString());
+////                MyGenericAsyncTask downloader = new MyGenericAsyncTask(MainActivity.this, new SearchActivity().getClass());
+////                downloader.execute(actorQuery);
+//                startActivity(new Intent(MainActivity.this, SearchActivity.class));
+//            }
+//        });
     }
 
     @Override
@@ -118,5 +141,23 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void initToolbar()
+    {
+//        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+//        collapsingToolbarLayout.setTitle("Meditación del día");
+//        collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(this,android.R.color.transparent));
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("The Movie Lister");
+        //toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        // toolbar.inflateMenu(R.menu.menu_font);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 }
