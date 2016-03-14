@@ -4,6 +4,8 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
+    <string name="menu_main">Sections</string>
+
     //Activity and Fragment toolbar
     <string name="title_list">My Lists</string>
     <string name="title_search">Search</string>

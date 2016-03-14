@@ -9,6 +9,7 @@ public class MovieDbUrl {
     private volatile static MovieDbUrl uniqueInstance;
 
     private static String url = "http://api.themoviedb.org/3/";
+    private static String youTubeUrl = "https://www.youtube.com/watch?v=";
     private static String API_KEY = "531aec356bbd54359474847e57c79986";
 
     public MovieDbUrl() {
@@ -35,7 +36,16 @@ public class MovieDbUrl {
     }
 
     public static String getCastQuery(int movieId){
-        return url + "movie/" + movieId + "?api_key=" + API_KEY + "&append_to_response=credits";
+        return url + "movie/" + movieId + "/credits?api_key=" + API_KEY;
+    }
+
+    public static String getVideoQuery(int movieId){
+        return url + "movie/" + movieId + "/videos?api_key=" + API_KEY;
+    }
+
+    public static String getYouTubePath(int videoId)
+    {
+        return youTubeUrl + videoId;
     }
 
 }

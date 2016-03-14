@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import me.hugomedina.themovielister.fragments.MovieListFragment;
 import me.hugomedina.themovielister.fragments.StatsFragment;
+import me.hugomedina.themovielister.objects.parse.MovieList;
 
 /**
  * Created by Hugo on 2/28/2016.
@@ -13,10 +14,12 @@ import me.hugomedina.themovielister.fragments.StatsFragment;
 public class MainPagerAdapter extends FragmentStatePagerAdapter {
 
     private int NUM_PAGES = 2;
+    private MovieList movieList;
 
-    public MainPagerAdapter(FragmentManager fm)
+    public MainPagerAdapter(FragmentManager fm, MovieList movieList)
     {
         super(fm);
+        this.movieList = movieList;
     }
 
     @Override
@@ -24,7 +27,7 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
         switch (position)
         {
             case 0:
-                return new MovieListFragment();
+                return new MovieListFragment(movieList);
             case 1:
                 return new StatsFragment();
 
@@ -37,7 +40,7 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return "My List";
+                return movieList.getName();
             case 1:
                 return "Statistics";
         }

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/action_sections"
+            android:checked="true"
+            android:icon="@drawable/ic_plus_white_48"
+            android:title="Manue"/>
+
+    </group>
+
+    <group android:checkableBehavior="none">
+        <item
+            android:id="@+id/action_image"
+            android:icon="@drawable/ic_search_white_48"
+            android:title="Search"/>
+
+    </group>
+</menu>
