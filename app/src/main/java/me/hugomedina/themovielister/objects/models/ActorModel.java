@@ -3,7 +3,7 @@ package me.hugomedina.themovielister.objects.models;
 /**
  * Created by Hugo on 2/11/2016.
  */
-public class Actor {
+public class ActorModel {
     private int id;
     private String name;
     private String picturePath;

@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.dacompsc.liturguiaandroid.ui.MisalActivity" >
+
+    <item
+        android:id="@+id/action_font"
+        android:orderInCategory="100"
+        app:showAsAction="always"
+        android:title="Lista"/>
+
+</menu>

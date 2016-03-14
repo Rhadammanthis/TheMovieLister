@@ -16,11 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.hugomedina.themovielister.R;
-import me.hugomedina.themovielister.objects.models.Actor;
+import me.hugomedina.themovielister.objects.models.ActorModel;
 
 public class ActorActivity extends AppCompatActivity {
 
-    private List<Actor> actors;
+    private List<ActorModel> actors;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +37,7 @@ public class ActorActivity extends AppCompatActivity {
             Toast.makeText(ActorActivity.this, "Number of Actors: " + actors.size(), Toast.LENGTH_SHORT).show();
 
            // for(int i = 0; i < actors.size(); i++)
-                Toast.makeText(ActorActivity.this, "Actor " + 0 +": " + actors.get(0).getPicturePath(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ActorActivity.this, "ActorModel ID" + 0 +": " + actors.get(6).getId(), Toast.LENGTH_SHORT).show();
         }
 
         ImageView imageView = (ImageView) findViewById(R.id.imageView);
@@ -63,7 +63,7 @@ public class ActorActivity extends AppCompatActivity {
             for (int i = 0; i < dataSize; i++) {
                 JSONObject jsonActor = data.getJSONObject(i);
 
-                Actor tempActor = new Actor();
+                ActorModel tempActor = new ActorModel();
                 tempActor.setId(jsonActor.getInt("id"));
                 tempActor.setName(jsonActor.getString("name"));
                 tempActor.setPicturePath(jsonActor.getString("profile_path"));
@@ -73,7 +73,6 @@ public class ActorActivity extends AppCompatActivity {
 
                 if (knownFor.getString("media_type").equals("movie")) {
                     tempActor.setKnownForFilm(knownFor.getString("original_title"));
-
                 }
 
                 actors.add(tempActor);

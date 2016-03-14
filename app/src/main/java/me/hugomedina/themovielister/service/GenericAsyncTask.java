@@ -1,107 +1,106 @@
 package me.hugomedina.themovielister.service;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 
-import java.io.IOException;
+import org.json.JSONObject;
 
+import java.io.IOException;
+import java.util.Map;
+
+import me.hugomedina.themovielister.util.CustomDialogProgress;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
 /**
- * Created by Hugo on 2/10/2016.
+ * Created by Hugo on 2/17/2016.
  */
-public class GenericAsyncTask extends AsyncTask<String, Integer, String> {
+public class GenericAsyncTask extends AsyncTask<Void, Void, String> {
 
-    public static final String TAG = GenericAsyncTask.class.getSimpleName();
+    private String mUrl;
+    private OnFinishTask mListener;
 
-    private Context context;
-    private Class classToLoad;
-    private ProgressDialog dialog;
+    /**
+     * this handles how to parse the JSON according to which query has been sent<p>
+     * 1 = Movie<p>
+     * 2 = Cast<p>
+     * 3 = Actor<p>
+     */
+    private int mCode;
 
-    private String url;
-
-    public GenericAsyncTask(Context ctx, Class c) {
-        context = ctx;
-        classToLoad = c;
+    /**
+     * Generic implementation of class
+     * @param query
+     * @param listener
+     * @param code
+     */
+    private GenericAsyncTask(String query, OnFinishTask listener, int code){
+        mUrl = MovieDbUrl.getMovieQuery(query);
+        mListener = listener;
+        mCode = code;
     }
 
     /**
-     * onPreExecute runs on the UI thread before doInBackground.
-     * This will start showing a small dialog that says Loading with a spinner
-     * to let the user know download is in progress
+     * To be used when querying a movie search
+     * @param query The movie to look up
+     * @param listener Handle onFinish behaviour
+     * @param code To set behaviour in doInBackground
      */
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-
-        dialog = new ProgressDialog(context);
-        dialog.setMessage("Loading...");
-        dialog.setProgressStyle(dialog.STYLE_SPINNER);
-        dialog.setCancelable(false);
-        dialog.show();
+    public static GenericAsyncTask newInstanceSearch(String query, OnFinishTask listener, int code)
+    {
+        return new GenericAsyncTask(query, listener, code);
     }
 
-    /**
-     * doInBackground() runs in the background on a worker thread. This is where code that can block the GUI should go.
-     *  Since we are using asynctask this is already in background threas we use okHttp method
-     *  call.execute() which executes in current thread (which is the background threas of this Async class)
-     *  Once we finish retrieving jsonData it is passed to method onPostExecute()
-     * @param params
-     * @return
-     */
     @Override
-    protected String doInBackground(String... params) {
+    protected String doInBackground(Void... params) {
+        String url = mUrl;
 
-        String url = params[0];
+        switch (mCode)
+        {
+            case 1:
+                OkHttpClient client = new OkHttpClient();
+                Request request = new Request.Builder()
+                        .url(url)
+                        .build();
+                Call call = client.newCall(request);
 
-        OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
-        Call call = client.newCall(request);
+                Response response = null;
 
-        Response response = null;
+                String jsonData = null;
 
-        String jsonData = null;
+                try {
+                    response = call.execute();
 
-        try {
-            response = call.execute();
+                    if (response.isSuccessful()) {
+                        jsonData = response.body().string();
 
-            if (response.isSuccessful()) {
-                jsonData = response.body().string();
+                    } else {
+                        jsonData = null;
+                    }
 
-            } else {
-                jsonData = null;
-            }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return jsonData;
 
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-        return jsonData; //This is returned to onPostExecute()
+
+        return "empty";
     }
 
-    /**
-     * onPostExecute runs on the  main (GUI) thread and receives
-     * the result of doInBackground.
-     *
-     * Here we pass a string representation of jsonData to the child/receiver
-     * activity.
-     *
-     * @param jsonData
-     */
     @Override
     protected void onPostExecute(String jsonData) {
-        super.onPostExecute(jsonData);
-        dialog.dismiss();
+        mListener.finishTask(jsonData);
+    }
 
-        //put json string as extra in intent
-        Intent i = new Intent(context, classToLoad);
-        i.putExtra("jsonData", jsonData);
-        context.startActivity(i);
+    public interface OnFinishTask {
+        /**
+         * Funcion que se llama cuando la tarea es terminada y no hay errores ni la consulta es nulla
+         *
+         * @param result
+         */
+        void finishTask(String result);
     }
 }
