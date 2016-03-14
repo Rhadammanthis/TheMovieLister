@@ -10,5 +10,17 @@
     <string name="title_list">My Lists</string>
     <string name="title_search">Search</string>
 
+    <string name="settings_text">Settings</string>
+    <string name="settings_select_list">Change default list</string>
+
+    //Main Pager Adapter
+    <string name="main_pager_title_movies">Movies</string>
+    <string name="main_pager_title_statistics">Statistics</string>
+
     <string name="system_loading">Loading</string>
+    <string name="system_choose">Choose</string>
+    <string name="system_cancel">Cancel</string>
+    <string name="system_affirmative">Ok</string>
+    <string name="system_negative">No</string>
+    <string name="system_no_internet">No internet connection detected. Please make sure your WiFi connection or mobile data is on.</string>
 </resources>

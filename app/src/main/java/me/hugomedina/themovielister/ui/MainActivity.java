@@ -1,7 +1,10 @@
 package me.hugomedina.themovielister.ui;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -27,6 +30,7 @@ import com.parse.SaveCallback;
 import java.util.List;
 
 import me.hugomedina.themovielister.InitPreferences;
+import me.hugomedina.themovielister.MovieListerApplication;
 import me.hugomedina.themovielister.R;
 import me.hugomedina.themovielister.adapter.MainPagerAdapter;
 import me.hugomedina.themovielister.business.MovieDAO;
@@ -40,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
     private MovieList defaultMovieList;
+    private NavigationView navigationView;
+
+    private String listTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         initToolbar();
         initDrawerLayout();
         initDialog();
+        initNavigation();
 
         final int defaultList = InitPreferences.newInstance(MainActivity.this).getDefaultList();
 
@@ -61,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
                 if(e == null)
                 {
                     defaultMovieList = objects.get(defaultList);
+                    listTitle = defaultMovieList.getName();
                     initPagerAdapter();
                 }
             }
@@ -181,7 +190,54 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        toolbar.setTitle(listTitle);
+
         dialog.dismiss();
+    }
+
+    private void initNavigation() {
+        navigationView = (NavigationView) findViewById(R.id.navigation);
+
+        //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+
+            // This method will trigger on item Click of navigation menu
+            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+
+
+                //Checking if the item is in checked state or not, if not make it in checked state
+                menuItem.setChecked(false);
+
+                //Closing drawer on item click
+                drawerLayout.closeDrawers();
+                if(MovieListerApplication.isLollipop){
+                    toolbar.setElevation(17f);
+                }
+
+                //Check to see which item was being clicked and perform appropriate action
+                switch (menuItem.getItemId()){
+                    //Replacing the main content with ContentFragment Which is our Inbox View;
+//                    case R.id.action_sections:
+//                        menuItem.setChecked(true);
+//                        if(getFragmentManager().findFragmentByTag("section")==null) {
+//                            replaceFragment(new SectionsFragment(),"section");
+//                        }
+
+                    case R.id.action_search:
+                        startActivity(new Intent(MainActivity.this,SearchActivity.class));
+                        return true;
+
+                    case R.id.action_settings:
+                        finish();
+                        startActivity(new Intent(MainActivity.this,SettingsActivity.class));
+                        return true;
+
+                    default:return true;
+                }
+            }
+        });
     }
 
     private void initToolbar()

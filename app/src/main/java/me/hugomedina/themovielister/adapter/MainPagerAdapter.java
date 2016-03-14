@@ -40,7 +40,7 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return movieList.getName();
+                return "Movies";
             case 1:
                 return "Statistics";
         }

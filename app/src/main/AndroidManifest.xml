@@ -44,8 +44,9 @@
         <activity
             android:name=".ui.SearchActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.TheMovieLister.AppCompat"></activity>
-        <activity android:name=".ui.MovieActivity"></activity>
+            android:theme="@style/Theme.TheMovieLister.AppCompat" />
+        <activity android:name=".ui.MovieActivity" />
+        <activity android:name=".ui.SettingsActivity"></activity>
     </application>
 
 </manifest>
