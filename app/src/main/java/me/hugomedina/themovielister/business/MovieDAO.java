@@ -1,11 +1,15 @@
 package me.hugomedina.themovielister.business;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.util.ArrayList;
@@ -32,31 +36,37 @@ public class MovieDAO {
         this.onQueryFinished = onQueryFinished;
     }
 
-    public void getAllMovies()
+    public void getAllMovies(MovieList movieList)
     {
         list = new ArrayList<>();
 
-        ParseQuery<Movie> query = ParseQuery.getQuery("Movie");
-        query.findInBackground(new FindCallback<Movie>() {
+        ParseQuery<BelongsTo> queryMovie = ParseQuery.getQuery("BelongsTo");
+        queryMovie.whereEqualTo("idMovieList", movieList);
+        queryMovie.include("idMovie");
+        queryMovie.findInBackground(new FindCallback<BelongsTo>() {
             @Override
-            public void done(List<Movie> objects, ParseException e) {
-                if (e == null)
+            public void done(List<BelongsTo> objects, ParseException e) {
+                if(e==null)
                 {
-
-                    for(Movie temp : objects)
+                    for(BelongsTo temp : objects)
                     {
-                        MovieModel movie = new MovieModel();
-                        movie.setTitle(temp.getTitle());
-                        movie.setPosterPath(temp.getPosterPath());
+                        Movie movie = temp.getMovie();
+                        MovieModel movieModel = new MovieModel();
+                        movieModel.setTitle(movie.getTitle());
+                        movieModel.setPosterPath(movie.getPosterPath());
 
-                        list.add(movie);
+                        list.add(movieModel);
                     }
+
+                }
+                else
+                {
+                    e.printStackTrace();
                 }
 
                 onQueryFinished.onMovieQueryFinished(list);
             }
         });
-
 
     }
 

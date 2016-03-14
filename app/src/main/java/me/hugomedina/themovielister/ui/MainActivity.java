@@ -5,9 +5,12 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,16 +18,28 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.util.List;
+
+import me.hugomedina.themovielister.InitPreferences;
 import me.hugomedina.themovielister.R;
 import me.hugomedina.themovielister.adapter.MainPagerAdapter;
+import me.hugomedina.themovielister.business.MovieDAO;
 import me.hugomedina.themovielister.objects.parse.MovieList;
 import me.hugomedina.themovielister.objects.parse.SubscribedTo;
+import me.hugomedina.themovielister.util.CustomDialogProgress;
 
 public class MainActivity extends AppCompatActivity {
+
+    private CustomDialogProgress dialog;
+    private DrawerLayout drawerLayout;
+    private Toolbar toolbar;
+    private MovieList defaultMovieList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,21 +47,27 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         initToolbar();
+        initDrawerLayout();
+        initDialog();
 
-        ViewPager mPager = (ViewPager) findViewById(R.id.main_pager);
-        PagerAdapter mPagerAdapter = new MainPagerAdapter(getSupportFragmentManager());
-        mPager.setAdapter(mPagerAdapter);
+        final int defaultList = InitPreferences.newInstance(MainActivity.this).getDefaultList();
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mPager);
-
-        FloatingActionButton fabSearch = (FloatingActionButton) findViewById(R.id.fab);
-        fabSearch.setOnClickListener(new View.OnClickListener() {
+        ParseQuery<MovieList> query = ParseQuery.getQuery("MovieList");
+        Log.d("pUser", ParseUser.getCurrentUser().getObjectId());
+        query.whereEqualTo("createdBy", ParseUser.getCurrentUser());
+        query.findInBackground(new FindCallback<MovieList>() {
             @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, SearchActivity.class));
+            public void done(List<MovieList> objects, ParseException e) {
+                if(e == null)
+                {
+                    defaultMovieList = objects.get(defaultList);
+                    initPagerAdapter();
+                }
             }
         });
+
+
+
 
 //        if(MovieListerApplication.isOnline)
 //            Toast.makeText(MainActivity.this, "On line!", Toast.LENGTH_SHORT).show();
@@ -143,15 +164,30 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void initPagerAdapter()
+    {
+        ViewPager mPager = (ViewPager) findViewById(R.id.main_pager);
+        PagerAdapter mPagerAdapter = new MainPagerAdapter(getSupportFragmentManager(), defaultMovieList);
+        mPager.setAdapter(mPagerAdapter);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mPager);
+
+        FloatingActionButton fabSearch = (FloatingActionButton) findViewById(R.id.fab);
+        fabSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, SearchActivity.class));
+            }
+        });
+
+        dialog.dismiss();
+    }
+
     private void initToolbar()
     {
-//        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-//        collapsingToolbarLayout.setTitle("Meditación del día");
-//        collapsingToolbarLayout.setExpandedTitleColor(ContextCompat.getColor(this,android.R.color.transparent));
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("The Movie Lister");
-        //toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
-        // toolbar.inflateMenu(R.menu.menu_font);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -159,5 +195,40 @@ public class MainActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+    }
+
+    private void initDrawerLayout() {
+        // Initializing Drawer Layout and ActionBarToggle
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.menu_main, R.string.menu_main){
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                // Code here will be triggered once the drawer closes as we dont want anything to happen so we leave this blank
+                super.onDrawerClosed(drawerView);
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                // Code here will be triggered once the drawer open as we dont want anything to happen so we leave this blank
+
+                super.onDrawerOpened(drawerView);
+            }
+        };
+
+        //Setting the actionbarToggle to drawer layout
+        drawerLayout.setDrawerListener(actionBarDrawerToggle);
+
+        //calling sync state is necessay or else your hamburger icon wont show up
+        actionBarDrawerToggle.syncState();
+    }
+
+    private void initDialog() {
+        dialog = new CustomDialogProgress.Builder(this)
+                .setMessage(R.string.system_loading)
+                .setCancelable(false)
+                .setProgress(true, 0)
+                .create()
+                .show();
     }
 }
