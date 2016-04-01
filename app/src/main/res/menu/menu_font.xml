@@ -1,12 +1,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.dacompsc.liturguiaandroid.ui.MisalActivity" >
+    tools:context="me.hugomedina.themovielister.ui.MainActivity" >
 
     <item
         android:id="@+id/action_font"
         android:orderInCategory="100"
         app:showAsAction="always"
-        android:title="Lista"/>
+        android:icon="@drawable/ic_list_white_48dp"
+        android:title="Sort List"/>
 
 </menu>

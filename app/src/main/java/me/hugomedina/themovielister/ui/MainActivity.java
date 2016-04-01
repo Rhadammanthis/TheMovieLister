@@ -155,6 +155,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        menu.getItem(0).setIcon(R.drawable.ic_list_white_48dp);
         return true;
     }
 
@@ -251,6 +252,11 @@ public class MainActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+        toolbar.inflateMenu(R.menu.menu_font);
+
+//        setSupportActionBar(toolbar);
+//        getSupportActionBar().setTitle(null);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private void initDrawerLayout() {
