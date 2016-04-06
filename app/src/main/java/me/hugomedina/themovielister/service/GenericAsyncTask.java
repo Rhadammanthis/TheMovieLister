@@ -37,7 +37,7 @@ public class GenericAsyncTask extends AsyncTask<Void, Void, String> {
      * @param code
      */
     private GenericAsyncTask(String query, OnFinishTask listener, int code){
-        mUrl = MovieDbUrl.getMovieQuery(query);
+        mUrl = query;
         mListener = listener;
         mCode = code;
     }
@@ -50,7 +50,12 @@ public class GenericAsyncTask extends AsyncTask<Void, Void, String> {
      */
     public static GenericAsyncTask newInstanceSearch(String query, OnFinishTask listener, int code)
     {
-        return new GenericAsyncTask(query, listener, code);
+        return new GenericAsyncTask(MovieDbUrl.getMovieQuery(query), listener, code);
+    }
+
+    public static GenericAsyncTask newInstanceCastAndCrew(String movieId, OnFinishTask listener, int code)
+    {
+        return new GenericAsyncTask(MovieDbUrl.getCastQuery(movieId), listener, code);
     }
 
     @Override

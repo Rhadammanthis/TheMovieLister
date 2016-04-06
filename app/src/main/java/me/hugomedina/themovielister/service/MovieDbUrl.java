@@ -35,7 +35,7 @@ public class MovieDbUrl {
         return url + "search/movie?api_key=" + API_KEY + "&query=" + nameToSearch + "&sort_by=popularity";
     }
 
-    public static String getCastQuery(int movieId){
+    public static String getCastQuery(String movieId){
         return url + "movie/" + movieId + "/credits?api_key=" + API_KEY;
     }
 

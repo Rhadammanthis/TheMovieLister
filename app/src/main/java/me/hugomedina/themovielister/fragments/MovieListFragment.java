@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.hugomedina.themovielister.R;
+import me.hugomedina.themovielister.adapter.CustomGridAdapter;
 import me.hugomedina.themovielister.adapter.MovieListAdapter;
 import me.hugomedina.themovielister.business.MovieDAO;
 import me.hugomedina.themovielister.interfaces.OnQueryFinished;
@@ -45,6 +46,8 @@ public class MovieListFragment extends android.support.v4.app.Fragment implement
         this.movieList = movieList;
     }
 
+    public MovieListFragment(){}
+
     @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -58,6 +61,7 @@ public class MovieListFragment extends android.support.v4.app.Fragment implement
 
         mRecyclerView = (RecyclerView) mainView.findViewById(R.id.recycler);
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, OrientationHelper.VERTICAL);
+        //LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
 
@@ -90,7 +94,7 @@ public class MovieListFragment extends android.support.v4.app.Fragment implement
 
     @Override
     public void onMovieQueryFinished(ArrayList<MovieModel> dataSet) {
-        MovieListAdapter mAdapter = new MovieListAdapter(dataSet, getActivity());
+        CustomGridAdapter mAdapter = new CustomGridAdapter(dataSet, getActivity());
         mRecyclerView.setAdapter(mAdapter);
     }
 }

@@ -8,124 +8,82 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true" >
 
-    <android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        >
+
 
         <LinearLayout
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
             <TextView
-                android:layout_width="match_parent"
+                android:textColor="@color/primary_text"
+                android:paddingLeft="16dip"
+                android:paddingRight="16dip"
+                android:layout_marginTop="16dip"
+                android:layout_marginBottom="8dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:lineSpacingExtra="8dp"
-                android:id="@+id/movieTitle"
-                android:text="Titulo"
-                android:padding="@dimen/activity_horizontal_margin"
-                />
-            <TextView
+                android:textSize="18sp"
+                android:text="Crew"/>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:paddingLeft="16dip"
+                android:paddingRight="16dip"
+                android:layout_marginTop="8dip"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:lineSpacingExtra="8dp"
-                android:text="Titulo"
-                android:padding="@dimen/activity_horizontal_margin"
-                />
-            <TextView
+                android:layout_height="40dip"
+                android:gravity="center_vertical">
+                <TextView
+                    android:textColor="@color/primary_text"
+                    android:layout_marginRight="16dip"
+                    android:text="Director:"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"/>
+                <TextView
+                    android:text="Completadas"
+                    android:id="@+id/movie_director"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:paddingLeft="16dip"
+                android:paddingRight="16dip"
+                android:layout_marginTop="8dip"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:lineSpacingExtra="8dp"
-                android:text="Titulo"
-                android:padding="@dimen/activity_horizontal_margin"
-                />
-            <TextView
+                android:layout_height="40dip"
+                android:gravity="center_vertical">
+                <TextView
+                    android:textColor="@color/primary_text"
+                    android:layout_marginRight="16dip"
+                    android:text="Writer:"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"/>
+                <TextView
+                    android:text="Completadas"
+                    android:id="@+id/movie_writer"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+            <View
+                android:layout_marginTop="8dip"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:lineSpacingExtra="8dp"
-                android:text="Titulo"
-                android:padding="@dimen/activity_horizontal_margin"
-                />
-            <TextView
+                android:layout_height="1dip"
+                android:background="@color/divider"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/movie_cast"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:lineSpacingExtra="8dp"
-                android:text="Titulo"
-                android:padding="@dimen/activity_horizontal_margin"
-                />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:lineSpacingExtra="8dp"
-                android:text="Titulo"
-                android:padding="@dimen/activity_horizontal_margin"
-                />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:lineSpacingExtra="8dp"
-                android:text="Titulo"
-                android:padding="@dimen/activity_horizontal_margin"
-                />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:lineSpacingExtra="8dp"
-                android:text="Titulo"
-                android:padding="@dimen/activity_horizontal_margin"
-                />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:lineSpacingExtra="8dp"
-                android:text="Titulo"
-                android:padding="@dimen/activity_horizontal_margin"
-                />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:lineSpacingExtra="8dp"
-                android:text="Titulo"
-                android:padding="@dimen/activity_horizontal_margin"
-                />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:lineSpacingExtra="8dp"
-                android:text="Titulo"
-                android:padding="@dimen/activity_horizontal_margin"
-                />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:lineSpacingExtra="8dp"
-                android:text="Titulo"
-                android:padding="@dimen/activity_horizontal_margin"
-                />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:lineSpacingExtra="8dp"
-                android:text="Titulo"
-                android:padding="@dimen/activity_horizontal_margin"
-                />
+                android:layout_height="wrap_content"/>
         </LinearLayout>
 
-    </android.support.v4.widget.NestedScrollView>
+
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"

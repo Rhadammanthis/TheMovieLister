@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -23,20 +23,28 @@ import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 import me.hugomedina.themovielister.R;
+import me.hugomedina.themovielister.adapter.CastAdapter;
+import me.hugomedina.themovielister.objects.models.Cast;
+import me.hugomedina.themovielister.objects.models.Crew;
 import me.hugomedina.themovielister.objects.models.MovieModel;
 import me.hugomedina.themovielister.objects.parse.BelongsTo;
 import me.hugomedina.themovielister.objects.parse.Movie;
 import me.hugomedina.themovielister.objects.parse.MovieList;
-import me.hugomedina.themovielister.objects.parse.SubscribedTo;
+import me.hugomedina.themovielister.service.GenericAsyncTask;
+import me.hugomedina.themovielister.util.CustomDialogProgress;
+import me.hugomedina.themovielister.util.JSONParser;
 
-public class MovieActivity extends Activity {
+public class MovieActivity extends Activity{
 
+    /**
+     * Holds basic movie info
+     */
     MovieModel movie;
+
+    CustomDialogProgress  mDialog;
 
     /**
      * To check if the movie is already in Parse altogether.
@@ -51,14 +59,17 @@ public class MovieActivity extends Activity {
         setContentView(R.layout.activity_movie);
 
         initToolbar();
+        initDialog();
+
+        //retrieves users's lists
         getMovieLists();
 
         //loads movie information
         Intent i = getIntent();
         movie = (MovieModel) i.getSerializableExtra("movie");
+        toolbar.setTitle(movie.getTitle());
 
-        TextView title = (TextView) findViewById(R.id.movieTitle);
-        title.setText(movie.getTitle());
+        requestAdditionalMovieData();
 
         ImageView poster = (ImageView) findViewById(R.id.moviePoster);
         Picasso.with(this).load("https://image.tmdb.org/t/p/w300" +
@@ -164,6 +175,21 @@ public class MovieActivity extends Activity {
         });
     }
 
+    private void requestAdditionalMovieData()
+    {
+        mDialog.show();
+
+        GenericAsyncTask.newInstanceCastAndCrew(
+                movie.getId(),
+                castListener,
+                1).execute();
+
+        GenericAsyncTask.newInstanceCastAndCrew(
+                movie.getId(),
+                crewListener,
+                1).execute();
+    }
+
     private void initToolbar()
     {
 
@@ -210,5 +236,53 @@ public class MovieActivity extends Activity {
         return collection;
     }
 
+    private void initDialog()
+    {
+        mDialog = new CustomDialogProgress
+                .Builder(MovieActivity.this)
+                .setMessage(R.string.system_loading)
+                .setProgress(true, 0)
+                .create();
+    }
+
+    private GenericAsyncTask.OnFinishTask crewListener = new GenericAsyncTask.OnFinishTask() {
+        @Override
+        public void finishTask(String result) {
+
+            ArrayList<Crew> crewList = new JSONParser(MovieActivity.this).getMovieCrew(result);
+
+            if(crewList != null)
+            {
+                TextView director = (TextView) findViewById(R.id.movie_director);
+                TextView writer = (TextView) findViewById(R.id.movie_writer);
+
+                writer.setText(crewList.get(0).getName());
+                director.setText(crewList.get(1).getName());
+            }
+
+        }
+    };
+
+    private GenericAsyncTask.OnFinishTask castListener = new GenericAsyncTask.OnFinishTask() {
+        @Override
+        public void finishTask(String result) {
+            ArrayList<Cast> castList = new JSONParser(MovieActivity.this).getMovieCast(result);
+
+            if(castList != null) {
+                RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.movie_cast);
+                mRecyclerView.setHasFixedSize(true);
+
+                RecyclerView.Adapter mAdapter = new CastAdapter(castList, MovieActivity.this);
+                mRecyclerView.setAdapter(mAdapter);
+
+                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MovieActivity.this);
+                mRecyclerView.setLayoutManager(layoutManager);
+
+                mDialog.dismiss();
+            }
+            else
+                mDialog.dismiss();
+        }
+    };
 
 }

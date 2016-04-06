@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view_meditacion"
+    android:layout_width="match_parent"
+    android:layout_height="108dip"
+    android:layout_centerHorizontal="true"
+    android:clickable="true"
+    android:layout_margin="4dip"
+    android:foreground="?selectableItemBackground"
+    android:layout_centerVertical="true"
+    android:layout_gravity="center_vertical"
+    card_view:cardBackgroundColor="#FFF"
+    card_view:cardCornerRadius="4dp"
+    card_view:cardElevation="3dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/item_grid_image"
+        android:scaleType="centerCrop"
+        android:background="@color/blue_accent" />
+
+    <TextView
+        android:layout_margin="8dip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Large Text"
+        android:id="@+id/item_grid_title"
+        android:textColor="#FFFFFF"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

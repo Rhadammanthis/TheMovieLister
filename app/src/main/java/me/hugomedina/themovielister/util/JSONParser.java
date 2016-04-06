@@ -9,6 +9,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import me.hugomedina.themovielister.objects.models.Cast;
+import me.hugomedina.themovielister.objects.models.Crew;
 import me.hugomedina.themovielister.objects.models.MovieModel;
 
 /**
@@ -46,11 +48,89 @@ public class JSONParser {
                 JSONObject jsonActor = data.getJSONObject(i);
 
                 MovieModel tempActor = new MovieModel();
-                tempActor.setId(jsonActor.getInt("id"));
+                tempActor.setId(jsonActor.getString("id"));
                 tempActor.setTitle(jsonActor.getString("original_title"));
                 tempActor.setPosterPath(jsonActor.getString("poster_path"));
 
                 list.add(tempActor);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+
+        }
+
+        return list;
+    }
+
+    public ArrayList<Cast> getMovieCast(String rawJSON)
+    {
+        ArrayList<Cast> list = null;
+
+        JSONObject results = null;
+
+        try {
+            results = new JSONObject(rawJSON);
+            JSONArray data = results.getJSONArray("cast");
+
+            int dataSize = data.length();
+
+            if (dataSize == 0) {
+                showNotFoundNotification();
+                return null;
+            }
+
+            list = new ArrayList<>(dataSize);
+
+            for (int i = 0; i < dataSize; i++) {
+                JSONObject jsonActor = data.getJSONObject(i);
+
+                Cast cast = new Cast(
+                        jsonActor.getString("character"),
+                        jsonActor.getString("name"),
+                        jsonActor.getString("profile_path")
+                );
+
+                list.add(cast);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+
+        }
+
+        return list;
+    }
+
+    public ArrayList<Crew> getMovieCrew(String rawJSON)
+    {
+        ArrayList<Crew> list = null;
+
+        JSONObject results = null;
+
+        try {
+            results = new JSONObject(rawJSON);
+            JSONArray data = results.getJSONArray("crew");
+
+            int dataSize = data.length();
+
+            if (dataSize == 0) {
+                showNotFoundNotification();
+                return null;
+            }
+
+            list = new ArrayList<>(dataSize);
+
+            for (int i = 0; i < dataSize; i++) {
+                JSONObject jsonActor = data.getJSONObject(i);
+
+                Crew crew = new Crew(
+                        jsonActor.getString("job"),
+                        jsonActor.getString("name"),
+                        jsonActor.getString("profile_path")
+                );
+
+                list.add(crew);
             }
 
         } catch (JSONException e) {

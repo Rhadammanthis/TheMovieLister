@@ -6,9 +6,10 @@ import java.io.Serializable;
  * Created by Hugo on 2/11/2016.
  */
 public class MovieModel implements Serializable {
-    public MovieModel(String title, String posterPath) {
+    public MovieModel(String title, String posterPath, String dbID) {
         this.title = title;
         this.posterPath = posterPath;
+        this.id = dbID;
     }
 
     public MovieModel()
@@ -16,11 +17,11 @@ public class MovieModel implements Serializable {
 
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -48,7 +49,7 @@ public class MovieModel implements Serializable {
         this.genre = genre;
     }
 
-    private int id;
+    private String id;
     private String title;
     private String posterPath;
     private String genre;
