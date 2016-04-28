@@ -17,6 +17,15 @@
     <string name="main_pager_title_movies">Movies</string>
     <string name="main_pager_title_statistics">Statistics</string>
 
+    <!-- Movie data labels -->
+    <string name="movie_data_cast">Cast</string>
+    <string name="movie_data_crew">Crew</string>
+    <string name="movie_data_synopsis">Synopsis</string>
+    <string name="movie_data_date">Release Date</string>
+    <string name="movie_data_time">Runtime</string>
+    <string name="movie_data_director">Director</string>
+    <string name="movie_data_writer">Writer</string>
+
     <string name="system_loading">Loading</string>
     <string name="system_choose">Choose</string>
     <string name="system_cancel">Cancel</string>

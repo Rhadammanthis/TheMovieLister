@@ -29,6 +29,7 @@ import me.hugomedina.themovielister.R;
 import me.hugomedina.themovielister.adapter.CastAdapter;
 import me.hugomedina.themovielister.objects.models.Cast;
 import me.hugomedina.themovielister.objects.models.Crew;
+import me.hugomedina.themovielister.objects.models.MovieData;
 import me.hugomedina.themovielister.objects.models.MovieModel;
 import me.hugomedina.themovielister.objects.parse.BelongsTo;
 import me.hugomedina.themovielister.objects.parse.Movie;
@@ -72,7 +73,7 @@ public class MovieActivity extends Activity{
         requestAdditionalMovieData();
 
         ImageView poster = (ImageView) findViewById(R.id.moviePoster);
-        Picasso.with(this).load("https://image.tmdb.org/t/p/w300" +
+        Picasso.with(this).load("https://image.tmdb.org/t/p/w500" +
                 movie.getPosterPath()).into(poster);
 
         //checks if movie is already in Parse
@@ -179,14 +180,9 @@ public class MovieActivity extends Activity{
     {
         mDialog.show();
 
-        GenericAsyncTask.newInstanceCastAndCrew(
+        GenericAsyncTask.newInstanceGetCastAndCrew(
                 movie.getId(),
-                castListener,
-                1).execute();
-
-        GenericAsyncTask.newInstanceCastAndCrew(
-                movie.getId(),
-                crewListener,
+                taskListenerCastCrew,
                 1).execute();
     }
 
@@ -245,11 +241,12 @@ public class MovieActivity extends Activity{
                 .create();
     }
 
-    private GenericAsyncTask.OnFinishTask crewListener = new GenericAsyncTask.OnFinishTask() {
+    private GenericAsyncTask.OnFinishTask taskListenerCastCrew = new GenericAsyncTask.OnFinishTask() {
         @Override
         public void finishTask(String result) {
 
             ArrayList<Crew> crewList = new JSONParser(MovieActivity.this).getMovieCrew(result);
+            ArrayList<Cast> castList = new JSONParser(MovieActivity.this).getMovieCast(result);
 
             if(crewList != null)
             {
@@ -257,17 +254,9 @@ public class MovieActivity extends Activity{
                 TextView writer = (TextView) findViewById(R.id.movie_writer);
 
                 writer.setText(crewList.get(0).getName());
-                director.setText(crewList.get(1).getName());
+                director.setText(crewList.get(0).getName());
+
             }
-
-        }
-    };
-
-    private GenericAsyncTask.OnFinishTask castListener = new GenericAsyncTask.OnFinishTask() {
-        @Override
-        public void finishTask(String result) {
-            ArrayList<Cast> castList = new JSONParser(MovieActivity.this).getMovieCast(result);
-
             if(castList != null) {
                 RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.movie_cast);
                 mRecyclerView.setHasFixedSize(true);
@@ -277,11 +266,36 @@ public class MovieActivity extends Activity{
 
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MovieActivity.this);
                 mRecyclerView.setLayoutManager(layoutManager);
-
-                mDialog.dismiss();
             }
-            else
-                mDialog.dismiss();
+
+            GenericAsyncTask.newInstanceMovieInfo(
+                    movie.getId(),
+                    movieInfoListener,
+                    1).execute();
+
+        }
+    };
+
+    private GenericAsyncTask.OnFinishTask movieInfoListener = new GenericAsyncTask.OnFinishTask() {
+        @Override
+        public void finishTask(String result) {
+
+            MovieData movieData = new JSONParser(MovieActivity.this).getMovieData(result);
+
+            if(movieData != null)
+            {
+                TextView synopsis = (TextView) findViewById(R.id.movie_synopsis);
+                TextView releaseDate = (TextView) findViewById(R.id.movie_release_date);
+                TextView runTime = (TextView) findViewById(R.id.movie_runtime);
+
+                synopsis.setText(movieData.getSynopsis());
+                releaseDate.setText(movieData.getReleaseDate());
+                runTime.setText(movieData.getRunTime() + " minutes");
+
+            }
+
+            mDialog.dismiss();
+
         }
     };
 

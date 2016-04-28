@@ -1,14 +1,9 @@
 package me.hugomedina.themovielister.service;
 
-import android.content.Context;
 import android.os.AsyncTask;
 
-import org.json.JSONObject;
-
 import java.io.IOException;
-import java.util.Map;
 
-import me.hugomedina.themovielister.util.CustomDialogProgress;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -48,12 +43,17 @@ public class GenericAsyncTask extends AsyncTask<Void, Void, String> {
      * @param listener Handle onFinish behaviour
      * @param code To set behaviour in doInBackground
      */
-    public static GenericAsyncTask newInstanceSearch(String query, OnFinishTask listener, int code)
+    public static GenericAsyncTask newInstanceSearchMovie(String query, OnFinishTask listener, int code)
     {
-        return new GenericAsyncTask(MovieDbUrl.getMovieQuery(query), listener, code);
+        return new GenericAsyncTask(MovieDbUrl.getMovieSearchQuery(query), listener, code);
     }
 
-    public static GenericAsyncTask newInstanceCastAndCrew(String movieId, OnFinishTask listener, int code)
+    public static GenericAsyncTask newInstanceMovieInfo(String movieId, OnFinishTask listener, int code)
+    {
+        return new GenericAsyncTask(MovieDbUrl.getMovieInfoQuery(movieId), listener, code);
+    }
+
+    public static GenericAsyncTask newInstanceGetCastAndCrew(String movieId, OnFinishTask listener, int code)
     {
         return new GenericAsyncTask(MovieDbUrl.getCastQuery(movieId), listener, code);
     }

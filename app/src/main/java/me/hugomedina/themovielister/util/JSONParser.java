@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import me.hugomedina.themovielister.objects.models.Cast;
 import me.hugomedina.themovielister.objects.models.Crew;
+import me.hugomedina.themovielister.objects.models.MovieData;
 import me.hugomedina.themovielister.objects.models.MovieModel;
 
 /**
@@ -139,6 +140,28 @@ public class JSONParser {
         }
 
         return list;
+    }
+
+    public MovieData getMovieData(String rawJSON)
+    {
+        MovieData movieData = new MovieData();
+
+        try {
+
+            JSONObject jsonActor = null;
+            jsonActor = new JSONObject(rawJSON);
+
+            movieData.setRunTime(jsonActor.getString("runtime"));
+            movieData.setReleaseDate(jsonActor.getString("release_date"));
+            movieData.setSynopsis(jsonActor.getString("overview"));
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+
+        }
+
+        return movieData;
     }
 
 

@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
 ////                MyGenericAsyncTask downloader = new MyGenericAsyncTask(MainActivity.this, new ActorActivity().getClass());
 ////                downloader.execute(actorQuery);
 //
-////                String actorQuery = MovieDbUrl.getMovieQuery(title.getText().toString());
+////                String actorQuery = MovieDbUrl.getMovieSearchQuery(title.getText().toString());
 ////                MyGenericAsyncTask downloader = new MyGenericAsyncTask(MainActivity.this, new SearchActivity().getClass());
 ////                downloader.execute(actorQuery);
 //                startActivity(new Intent(MainActivity.this, SearchActivity.class));

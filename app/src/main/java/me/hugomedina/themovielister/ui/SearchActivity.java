@@ -83,7 +83,7 @@ public class SearchActivity extends AppCompatActivity implements GenericAsyncTas
     private void performSearch(String query)
     {
         mDialog.show();
-        GenericAsyncTask.newInstanceSearch(
+        GenericAsyncTask.newInstanceSearchMovie(
                 query,
                 SearchActivity.this,
                 1).execute();
