@@ -43,6 +43,10 @@ public class MovieDbUrl {
         return url + "movie/" + movieId + "/credits?api_key=" + API_KEY;
     }
 
+    public static String getMovieImages(String movieId){
+        return url + "movie/" + movieId + "/images?api_key=" + API_KEY;
+    }
+
     public static String getVideoQuery(int movieId){
         return url + "movie/" + movieId + "/videos?api_key=" + API_KEY;
     }

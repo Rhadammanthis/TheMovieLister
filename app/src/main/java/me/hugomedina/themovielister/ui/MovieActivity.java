@@ -22,13 +22,17 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import me.hugomedina.themovielister.R;
 import me.hugomedina.themovielister.adapter.CastAdapter;
+import me.hugomedina.themovielister.adapter.ImageAdapter;
 import me.hugomedina.themovielister.objects.models.Cast;
 import me.hugomedina.themovielister.objects.models.Crew;
+import me.hugomedina.themovielister.objects.models.ImageModel;
 import me.hugomedina.themovielister.objects.models.MovieData;
 import me.hugomedina.themovielister.objects.models.MovieModel;
 import me.hugomedina.themovielister.objects.parse.BelongsTo;
@@ -70,13 +74,15 @@ public class MovieActivity extends Activity{
         movie = (MovieModel) i.getSerializableExtra("movie");
         toolbar.setTitle(movie.getTitle());
 
+        //queries for data not stored in the MovieModel
         requestAdditionalMovieData();
 
+        //Loads poster image
         ImageView poster = (ImageView) findViewById(R.id.moviePoster);
         Picasso.with(this).load("https://image.tmdb.org/t/p/w500" +
                 movie.getPosterPath()).into(poster);
 
-        //checks if movie is already in Parse
+        //checks if movie is already in the Parse DB
         ParseQuery<Movie> queryMovie = ParseQuery.getQuery("Movie");
         queryMovie.whereEqualTo("title",movie.getTitle());
         queryMovie.getFirstInBackground(new GetCallback<Movie>() {
@@ -92,6 +98,7 @@ public class MovieActivity extends Activity{
             }
         });
 
+        //Behaviour to add movie to list when the FAB is clicked
         FloatingActionButton fAB = (FloatingActionButton) findViewById(R.id.movieFAB);
         fAB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,6 +136,7 @@ public class MovieActivity extends Activity{
                                 }
                             })
                             .positiveText("Choose")
+                            .negativeText("Cancel")
                             .show();
                 } else {
 
@@ -201,6 +209,9 @@ public class MovieActivity extends Activity{
         });
     }
 
+    /**
+     * Loads a local instance of movie lists in Parse into a List
+     */
     private void getMovieLists()
     {
         final ArrayList<MovieList> list = new ArrayList<>();
@@ -241,6 +252,24 @@ public class MovieActivity extends Activity{
                 .create();
     }
 
+    public String parseDateToddMMyyyy(String time) {
+        String inputPattern = "yyyy-MM-dd";
+        String outputPattern = "dd/MM/yyyy";
+        SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
+        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+
+        Date date = null;
+        String str = null;
+
+        try {
+            date = inputFormat.parse(time);
+            str = outputFormat.format(date);
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+        }
+        return str;
+    }
+
     private GenericAsyncTask.OnFinishTask taskListenerCastCrew = new GenericAsyncTask.OnFinishTask() {
         @Override
         public void finishTask(String result) {
@@ -253,8 +282,21 @@ public class MovieActivity extends Activity{
                 TextView director = (TextView) findViewById(R.id.movie_director);
                 TextView writer = (TextView) findViewById(R.id.movie_writer);
 
-                writer.setText(crewList.get(0).getName());
-                director.setText(crewList.get(0).getName());
+                String directorComplete = "", writerComplete = "";
+
+                for(Crew crew:crewList)
+                {
+                    if(crew.getJob().equals("Director"))
+                        directorComplete += crew.getName() + " & ";
+                    if(crew.getJob().equals("Writer") || crew.getJob().equals("Screenplay"))
+                        writerComplete += crew.getName() + " & ";
+                }
+
+                directorComplete = directorComplete.substring(0, directorComplete.lastIndexOf("&") - 1);
+                writerComplete = writerComplete.substring(0, writerComplete.lastIndexOf("&") - 1);
+
+                writer.setText(writerComplete);
+                director.setText(directorComplete);
 
             }
             if(castList != null) {
@@ -289,8 +331,35 @@ public class MovieActivity extends Activity{
                 TextView runTime = (TextView) findViewById(R.id.movie_runtime);
 
                 synopsis.setText(movieData.getSynopsis());
-                releaseDate.setText(movieData.getReleaseDate());
+                releaseDate.setText(parseDateToddMMyyyy(movieData.getReleaseDate()));
                 runTime.setText(movieData.getRunTime() + " minutes");
+
+            }
+
+            GenericAsyncTask.newInstancePhotos(
+                    movie.getId(),
+                    moviePhotosListener,
+                    1).execute();
+
+        }
+    };
+
+    private GenericAsyncTask.OnFinishTask moviePhotosListener = new GenericAsyncTask.OnFinishTask() {
+        @Override
+        public void finishTask(String result) {
+
+            ArrayList<ImageModel> imageList = new JSONParser(MovieActivity.this).getMovieImages(result);
+
+            if(imageList != null)
+            {
+                RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.movie_pictures);
+                mRecyclerView.setHasFixedSize(true);
+
+                RecyclerView.Adapter mAdapter = new ImageAdapter(imageList, MovieActivity.this);
+                mRecyclerView.setAdapter(mAdapter);
+
+                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MovieActivity.this,LinearLayoutManager.HORIZONTAL,false);
+                mRecyclerView.setLayoutManager(layoutManager);
 
             }
 
@@ -298,5 +367,7 @@ public class MovieActivity extends Activity{
 
         }
     };
+
+
 
 }

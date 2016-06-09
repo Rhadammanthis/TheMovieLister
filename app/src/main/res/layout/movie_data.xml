@@ -137,5 +137,26 @@
             android:id="@+id/movie_cast"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+        <View
+            android:layout_marginTop="8dip"
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:background="@color/divider"/>
+        <TextView
+            android:textColor="@color/primary_text"
+            android:paddingLeft="16dip"
+            android:paddingRight="16dip"
+            android:layout_marginTop="8dip"
+            android:layout_marginBottom="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="@string/movie_data_photos"/>
+        <android.support.v7.widget.RecyclerView
+            android:paddingTop="8dip"
+            android:paddingBottom="8dip"
+            android:id="@+id/movie_pictures"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

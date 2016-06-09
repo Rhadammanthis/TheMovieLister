@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import me.hugomedina.themovielister.objects.models.Cast;
 import me.hugomedina.themovielister.objects.models.Crew;
+import me.hugomedina.themovielister.objects.models.ImageModel;
 import me.hugomedina.themovielister.objects.models.MovieData;
 import me.hugomedina.themovielister.objects.models.MovieModel;
 
@@ -162,6 +163,49 @@ public class JSONParser {
         }
 
         return movieData;
+    }
+
+    public ArrayList<ImageModel> getMovieImages(String rawJSON)
+    {
+        ArrayList<ImageModel> list = null;
+
+        JSONObject results = null;
+
+        try {
+            results = new JSONObject(rawJSON);
+            JSONArray data = results.getJSONArray("backdrops");
+
+            int dataSize = data.length();
+
+            if (dataSize == 0) {
+                showNotFoundNotification();
+                return null;
+            }
+
+            list = new ArrayList<>(dataSize);
+
+            for (int i = 0; i < dataSize; i++) {
+                JSONObject jsonActor = data.getJSONObject(i);
+
+                ImageModel image = new ImageModel(
+                        jsonActor.getDouble("aspect_ratio"),
+                        jsonActor.getString("file_path"),
+                        jsonActor.getInt("height"),
+                        jsonActor.getString("iso_639_1"),
+                        jsonActor.getDouble("vote_average"),
+                        jsonActor.getInt("vote_count"),
+                        jsonActor.getInt("width")
+                );
+
+                list.add(image);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+
+        }
+
+        return list;
     }
 
 

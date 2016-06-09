@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -39,7 +40,6 @@ public class SearchActivity extends AppCompatActivity implements GenericAsyncTas
         initComponents();
         initDialog();
 
-
     }
 
     @Override
@@ -62,6 +62,7 @@ public class SearchActivity extends AppCompatActivity implements GenericAsyncTas
                 return false;
             }
         });
+
 
         return true;
     }

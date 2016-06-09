@@ -20,6 +20,7 @@
     <!-- Movie data labels -->
     <string name="movie_data_cast">Cast</string>
     <string name="movie_data_crew">Crew</string>
+    <string name="movie_data_photos">Photos</string>
     <string name="movie_data_synopsis">Synopsis</string>
     <string name="movie_data_date">Release Date</string>
     <string name="movie_data_time">Runtime</string>

@@ -58,6 +58,11 @@ public class GenericAsyncTask extends AsyncTask<Void, Void, String> {
         return new GenericAsyncTask(MovieDbUrl.getCastQuery(movieId), listener, code);
     }
 
+    public static GenericAsyncTask newInstancePhotos(String movieId, OnFinishTask listener, int code)
+    {
+        return new GenericAsyncTask(MovieDbUrl.getMovieImages(movieId), listener, code);
+    }
+
     @Override
     protected String doInBackground(Void... params) {
         String url = mUrl;
