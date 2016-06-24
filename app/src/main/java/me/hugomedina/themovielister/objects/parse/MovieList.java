@@ -4,11 +4,13 @@ import com.parse.ParseClassName;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+import java.io.Serializable;
+
 /**
  * Created by Hugo on 2/11/2016.
  */
 @ParseClassName("MovieList")
-public class MovieList extends ParseObject{
+public class MovieList extends ParseObject implements Serializable{
 
     private String NAME = "name";
     private String USER = "createdBy";

@@ -52,7 +52,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         holder.itemCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                clickListener.onMovieClicked(dataSet.get(position));
+                clickListener.onMovieClicked(view, dataSet.get(position));
             }
         });
 

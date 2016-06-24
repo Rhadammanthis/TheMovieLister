@@ -31,11 +31,11 @@
 
             <ImageView
                 android:id="@+id/moviePoster"
+                android:transitionName="movie_poster"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 android:fitsSystemWindows="true"
-                android:src="@drawable/rachel"
                 app:layout_collapseMode="parallax"
                 />
 

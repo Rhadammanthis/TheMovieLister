@@ -27,7 +27,7 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
         switch (position)
         {
             case 0:
-                return new MovieListFragment(movieList);
+                return MovieListFragment.newInstance(movieList);
             case 1:
                 return new StatsFragment();
 

@@ -54,6 +54,7 @@ public class MovieDAO {
                         MovieModel movieModel = new MovieModel();
                         movieModel.setTitle(movie.getTitle());
                         movieModel.setPosterPath(movie.getPosterPath());
+                        movieModel.setId(movie.getTMDBId());
 
                         list.add(movieModel);
                     }

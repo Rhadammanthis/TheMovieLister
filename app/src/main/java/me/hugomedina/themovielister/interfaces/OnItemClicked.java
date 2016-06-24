@@ -1,5 +1,7 @@
 package me.hugomedina.themovielister.interfaces;
 
+import android.view.View;
+
 import me.hugomedina.themovielister.objects.models.MovieModel;
 
 /**
@@ -7,6 +9,6 @@ import me.hugomedina.themovielister.objects.models.MovieModel;
  */
 public interface OnItemClicked {
 
-    void onMovieClicked(MovieModel movie);
+    void onMovieClicked(View view, MovieModel movie);
 
 }

@@ -1,6 +1,7 @@
 package me.hugomedina.themovielister.adapter;
 
 import android.content.Context;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import me.hugomedina.themovielister.R;
+import me.hugomedina.themovielister.interfaces.OnItemClicked;
 import me.hugomedina.themovielister.objects.models.MovieModel;
 
 /**
@@ -24,12 +26,14 @@ public class CustomGridAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHo
     private int DEFAULT_TYPE = 1;
 
     public ArrayList<MovieModel> dataSet;
+    private OnItemClicked clickListener;
     private Context context;
 
-    public CustomGridAdapter(ArrayList<MovieModel> dataSet, Context context)
+    public CustomGridAdapter(ArrayList<MovieModel> dataSet, Context context, OnItemClicked clickListener)
     {
         this.dataSet = dataSet;
         this.context = context;
+        this.clickListener = clickListener;
     }
 
     @Override
@@ -55,7 +59,7 @@ public class CustomGridAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
         if(holder instanceof CustomGridAdapter.ViewHolderHeader)
         {
@@ -72,6 +76,16 @@ public class CustomGridAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHo
             vHDefault.title.setText(dataSet.get(position).getTitle());
             Picasso.with(context).load("https://image.tmdb.org/t/p/w300" +
                     dataSet.get(position).getPosterPath()).into(vHDefault.image);
+
+            vHDefault.itemView.setTag(vHDefault.image);
+//            ViewCompat.setTransitionName(vHDefault.image, String.valueOf(position) + "_image");
+
+            vHDefault.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    clickListener.onMovieClicked((View)view.getTag(), dataSet.get(position));
+                }
+            });
         }
 
     }
@@ -104,7 +118,7 @@ public class CustomGridAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     }
 
-    private class ViewHolder extends RecyclerView.ViewHolder
+    public class ViewHolder extends RecyclerView.ViewHolder
     {
 
         public ImageView image;

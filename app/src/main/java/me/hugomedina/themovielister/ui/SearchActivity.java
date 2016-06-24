@@ -78,7 +78,7 @@ public class SearchActivity extends AppCompatActivity implements GenericAsyncTas
     }
 
     /**
-     * Launch AsynkTask to query the text in the TextEdit
+     * Launch AsyncTask to query the text in the TextEdit
      * @param query Text to lookup for
      */
     private void performSearch(String query)
@@ -126,7 +126,7 @@ public class SearchActivity extends AppCompatActivity implements GenericAsyncTas
     }
 
     @Override
-    public void onMovieClicked(MovieModel movie) {
+    public void onMovieClicked(View view, MovieModel movie) {
         Intent intent = new Intent(SearchActivity.this, MovieActivity.class);
         intent.putExtra("movie", movie);
         startActivity(intent);

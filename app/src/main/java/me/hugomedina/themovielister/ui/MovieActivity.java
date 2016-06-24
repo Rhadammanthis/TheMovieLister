@@ -189,7 +189,7 @@ public class MovieActivity extends Activity{
      */
     private void requestAdditionalMovieData()
     {
-        mDialog.show();
+       // mDialog.show();
 
         GenericAsyncTask.newInstanceGetCastAndCrew(
                 movie.getId(),
