@@ -104,6 +104,7 @@ public class MovieActivity extends Activity{
             @Override
             public void onClick(View view) {
 
+                //If the user has more than 1 list, show dialog with all the Movie Lists so the user can choose which will the Movie be added to
                 if (movieLists.size() > 1) {
                     new MaterialDialog.Builder(MovieActivity.this)
                             .title("Select a List")
@@ -141,7 +142,6 @@ public class MovieActivity extends Activity{
                 } else {
 
                     //Look for Movie Lists created by user
-
                     Movie movieParse = new Movie();
                     movieParse.setTMDBId(String.valueOf(movie.getId()));
                     movieParse.setTitle(movie.getTitle());
@@ -184,6 +184,9 @@ public class MovieActivity extends Activity{
         });
     }
 
+    /**
+     * Starts the chained async data request
+     */
     private void requestAdditionalMovieData()
     {
         mDialog.show();
@@ -194,9 +197,11 @@ public class MovieActivity extends Activity{
                 1).execute();
     }
 
+    /**
+     * Initializes toolbar
+     */
     private void initToolbar()
     {
-
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Movie");
         toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
@@ -210,7 +215,7 @@ public class MovieActivity extends Activity{
     }
 
     /**
-     * Loads a local instance of movie lists in Parse into a List
+     * Loads a local instance of movie lists in Parse into a collection
      */
     private void getMovieLists()
     {
@@ -231,6 +236,10 @@ public class MovieActivity extends Activity{
         });
     }
 
+    /**
+     *
+     * @return Collection with the names of the user's lists
+     */
     private List<String> getListNameCollection()
     {
         List<String> collection = new ArrayList<>();
@@ -243,6 +252,9 @@ public class MovieActivity extends Activity{
         return collection;
     }
 
+    /**
+     * Initializes global dialog instance
+     */
     private void initDialog()
     {
         mDialog = new CustomDialogProgress
@@ -252,6 +264,7 @@ public class MovieActivity extends Activity{
                 .create();
     }
 
+    //To change date String format
     public String parseDateToddMMyyyy(String time) {
         String inputPattern = "yyyy-MM-dd";
         String outputPattern = "dd/MM/yyyy";
@@ -270,6 +283,7 @@ public class MovieActivity extends Activity{
         return str;
     }
 
+    //AsyncTask response listener for Cast and Crew
     private GenericAsyncTask.OnFinishTask taskListenerCastCrew = new GenericAsyncTask.OnFinishTask() {
         @Override
         public void finishTask(String result) {
@@ -284,6 +298,7 @@ public class MovieActivity extends Activity{
 
                 String directorComplete = "", writerComplete = "";
 
+                //Checks if the movie has multiple credits for Director and Writer
                 for(Crew crew:crewList)
                 {
                     if(crew.getJob().equals("Director"))
@@ -292,15 +307,21 @@ public class MovieActivity extends Activity{
                         writerComplete += crew.getName() + " & ";
                 }
 
-                directorComplete = directorComplete.substring(0, directorComplete.lastIndexOf("&") - 1);
-                writerComplete = writerComplete.substring(0, writerComplete.lastIndexOf("&") - 1);
+                //Cleans the formatting
+                if(!directorComplete.isEmpty())
+                    directorComplete = directorComplete.substring(0, directorComplete.lastIndexOf("&") - 1);
+                if(!writerComplete.isEmpty())
+                    writerComplete = writerComplete.substring(0, writerComplete.lastIndexOf("&") - 1);
 
                 writer.setText(writerComplete);
                 director.setText(directorComplete);
 
             }
             if(castList != null) {
+
+                //Populates RecyclerView with cast info
                 RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.movie_cast);
+                mRecyclerView.setNestedScrollingEnabled(false);
                 mRecyclerView.setHasFixedSize(true);
 
                 RecyclerView.Adapter mAdapter = new CastAdapter(castList, MovieActivity.this);
@@ -310,6 +331,7 @@ public class MovieActivity extends Activity{
                 mRecyclerView.setLayoutManager(layoutManager);
             }
 
+            //Chained async request
             GenericAsyncTask.newInstanceMovieInfo(
                     movie.getId(),
                     movieInfoListener,
@@ -324,6 +346,7 @@ public class MovieActivity extends Activity{
 
             MovieData movieData = new JSONParser(MovieActivity.this).getMovieData(result);
 
+            //Loads additional Movie data
             if(movieData != null)
             {
                 TextView synopsis = (TextView) findViewById(R.id.movie_synopsis);
@@ -336,6 +359,7 @@ public class MovieActivity extends Activity{
 
             }
 
+            //Chained async request
             GenericAsyncTask.newInstancePhotos(
                     movie.getId(),
                     moviePhotosListener,
@@ -352,6 +376,8 @@ public class MovieActivity extends Activity{
 
             if(imageList != null)
             {
+
+                //Populates horizontal RecyclerView with Movie images
                 RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.movie_pictures);
                 mRecyclerView.setHasFixedSize(true);
 
