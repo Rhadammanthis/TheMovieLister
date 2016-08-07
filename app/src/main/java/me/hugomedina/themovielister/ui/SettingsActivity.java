@@ -10,17 +10,13 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseQuery;
-import com.parse.ParseUser;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
 import me.hugomedina.themovielister.InitPreferences;
 import me.hugomedina.themovielister.R;
-import me.hugomedina.themovielister.objects.parse.MovieList;
 import me.hugomedina.themovielister.util.*;
 
 public class SettingsActivity extends BaseActivity {
@@ -52,15 +48,15 @@ public class SettingsActivity extends BaseActivity {
                 }
                 else
                 {
-                    new CustomDialog.Builder(SettingsActivity.this)
-                            .setMessage(R.string.system_no_internet)
-                            .setPositiveButtom(R.string.system_affirmative, new CustomDialog.CallbackListener() {
-
-                                @Override
-                                public void onClick() {
-                                }
-                            })
-                            .show();
+//                    new CustomDialog.Builder(SettingsActivity.this)
+//                            .setMessage(R.string.system_no_internet)
+//                            .setPositiveButtom(R.string.system_affirmative, new CustomDialog.CallbackListener() {
+//
+//                                @Override
+//                                public void onClick() {
+//                                }
+//                            })
+//                            .show();
                 }
             }
         });
@@ -71,37 +67,37 @@ public class SettingsActivity extends BaseActivity {
     {
         collection = new ArrayList<>();
 
-        ParseQuery<MovieList> query = ParseQuery.getQuery("MovieList");
-        Log.d("pUser", ParseUser.getCurrentUser().getObjectId());
-        query.whereEqualTo("createdBy", ParseUser.getCurrentUser());
-        query.findInBackground(new FindCallback<MovieList>() {
-            @Override
-            public void done(List<MovieList> objects, ParseException e) {
-                if(e == null)
-                {
-                    for(MovieList object: objects) {
-                        collection.add(object.getName());
-                    }
-
-                    int selection = InitPreferences.newInstance(SettingsActivity.this).getDefaultList();
-                    new MaterialDialog.Builder(SettingsActivity.this)
-                            .title("Escoge una sección")
-                            .items(collection)
-                            .itemsCallbackSingleChoice(selection, new MaterialDialog.ListCallbackSingleChoice() {
-                                @Override
-                                public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-
-                                    InitPreferences.newInstance(SettingsActivity.this).setDefaultList(which);
-
-                                    return true;
-                                }
-                            })
-                            .positiveText(R.string.system_choose)
-                            .negativeText(R.string.system_cancel)
-                            .show();
-                }
-            }
-        });
+//        ParseQuery<MovieList> query = ParseQuery.getQuery("MovieList");
+//        Log.d("pUser", ParseUser.getCurrentUser().getObjectId());
+//        query.whereEqualTo("createdBy", ParseUser.getCurrentUser());
+//        query.findInBackground(new FindCallback<MovieList>() {
+//            @Override
+//            public void done(List<MovieList> objects, ParseException e) {
+//                if(e == null)
+//                {
+//                    for(MovieList object: objects) {
+//                        collection.add(object.getName());
+//                    }
+//
+//                    int selection = InitPreferences.newInstance(SettingsActivity.this).getDefaultList();
+//                    new MaterialDialog.Builder(SettingsActivity.this)
+//                            .title("Escoge una sección")
+//                            .items(collection)
+//                            .itemsCallbackSingleChoice(selection, new MaterialDialog.ListCallbackSingleChoice() {
+//                                @Override
+//                                public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+//
+//                                    InitPreferences.newInstance(SettingsActivity.this).setDefaultList(which);
+//
+//                                    return true;
+//                                }
+//                            })
+//                            .positiveText(R.string.system_choose)
+//                            .negativeText(R.string.system_cancel)
+//                            .show();
+//                }
+//            }
+//        });
 
     }
 

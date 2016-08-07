@@ -4,11 +4,8 @@ import android.app.Fragment;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 
-import com.parse.ParseException;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;

@@ -1,7 +1,6 @@
 package me.hugomedina.themovielister.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +15,6 @@ import java.util.ArrayList;
 import me.hugomedina.themovielister.R;
 import me.hugomedina.themovielister.interfaces.OnItemClicked;
 import me.hugomedina.themovielister.objects.models.Cast;
-import me.hugomedina.themovielister.objects.models.MovieModel;
 
 /**
  * Created by Hugo on 2/15/2016.
@@ -46,10 +44,10 @@ public class CastAdapter extends RecyclerView.Adapter<CastAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
-        holder.castName.setText(dataSet.get(position).getActor());
+//        holder.castName.setText(dataSet.get(position).getActor());
         holder.castCharacter.setText(dataSet.get(position).getCharacter());
-        Picasso.with(context).load("https://image.tmdb.org/t/p/w300" +
-                dataSet.get(position).getPicturePath()).into(holder.castPic);
+//        Picasso.with(context).load("https://image.tmdb.org/t/p/w300" +
+//                dataSet.get(position).getPicturePath()).into(holder.castPic);
 
     }
 

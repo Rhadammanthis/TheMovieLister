@@ -87,11 +87,7 @@ public class JSONParser {
             for (int i = 0; i < dataSize; i++) {
                 JSONObject jsonActor = data.getJSONObject(i);
 
-                Cast cast = new Cast(
-                        jsonActor.getString("character"),
-                        jsonActor.getString("name"),
-                        jsonActor.getString("profile_path")
-                );
+                Cast cast = new Cast();
 
                 list.add(cast);
             }
@@ -126,11 +122,7 @@ public class JSONParser {
             for (int i = 0; i < dataSize; i++) {
                 JSONObject jsonActor = data.getJSONObject(i);
 
-                Crew crew = new Crew(
-                        jsonActor.getString("job"),
-                        jsonActor.getString("name"),
-                        jsonActor.getString("profile_path")
-                );
+                Crew crew = new Crew();
 
                 list.add(crew);
             }

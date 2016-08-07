@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -14,7 +13,6 @@ import java.util.ArrayList;
 
 import me.hugomedina.themovielister.R;
 import me.hugomedina.themovielister.interfaces.OnItemClicked;
-import me.hugomedina.themovielister.objects.models.Cast;
 import me.hugomedina.themovielister.objects.models.ImageModel;
 
 /**

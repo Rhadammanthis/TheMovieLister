@@ -21,12 +21,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseQuery;
-import com.parse.ParseUser;
-import com.parse.SaveCallback;
-
 import java.util.List;
 
 import me.hugomedina.themovielister.InitPreferences;
@@ -34,8 +28,6 @@ import me.hugomedina.themovielister.MovieListerApplication;
 import me.hugomedina.themovielister.R;
 import me.hugomedina.themovielister.adapter.MainPagerAdapter;
 import me.hugomedina.themovielister.business.MovieDAO;
-import me.hugomedina.themovielister.objects.parse.MovieList;
-import me.hugomedina.themovielister.objects.parse.SubscribedTo;
 import me.hugomedina.themovielister.util.CustomDialogProgress;
 
 public class MainActivity extends AppCompatActivity {
@@ -43,10 +35,9 @@ public class MainActivity extends AppCompatActivity {
     private CustomDialogProgress dialog;
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
-    private MovieList defaultMovieList;
     private NavigationView navigationView;
 
-    private String listTitle;
+    private String listTitle = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,20 +51,26 @@ public class MainActivity extends AppCompatActivity {
 
         final int defaultList = InitPreferences.newInstance(MainActivity.this).getDefaultList();
 
-        ParseQuery<MovieList> query = ParseQuery.getQuery("MovieList");
-        Log.d("pUser", ParseUser.getCurrentUser().getObjectId());
-        query.whereEqualTo("createdBy", ParseUser.getCurrentUser());
-        query.findInBackground(new FindCallback<MovieList>() {
-            @Override
-            public void done(List<MovieList> objects, ParseException e) {
-                if(e == null)
-                {
-                    defaultMovieList = objects.get(defaultList);
-                    listTitle = defaultMovieList.getName();
-                    initPagerAdapter();
-                }
-            }
-        });
+        initPagerAdapter();
+
+//        defaultMovieList = objects.get(defaultList);
+//        listTitle = defaultMovieList.getName();
+//        initPagerAdapter();
+
+//        ParseQuery<MovieList> query = ParseQuery.getQuery("MovieList");
+//        Log.d("pUser", ParseUser.getCurrentUser().getObjectId());
+//        query.whereEqualTo("createdBy", ParseUser.getCurrentUser());
+//        query.findInBackground(new FindCallback<MovieList>() {
+//            @Override
+//            public void done(List<MovieList> objects, ParseException e) {
+//                if(e == null)
+//                {
+//                    defaultMovieList = objects.get(defaultList);
+//                    listTitle = defaultMovieList.getName();
+//                    initPagerAdapter();
+//                }
+//            }
+//        });
 
 
 
@@ -177,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
     private void initPagerAdapter()
     {
         ViewPager mPager = (ViewPager) findViewById(R.id.main_pager);
-        PagerAdapter mPagerAdapter = new MainPagerAdapter(getSupportFragmentManager(), defaultMovieList);
+        PagerAdapter mPagerAdapter = new MainPagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);

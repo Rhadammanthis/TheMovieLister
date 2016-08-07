@@ -6,14 +6,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 
-import com.parse.Parse;
-import com.parse.ParseObject;
 
-import me.hugomedina.themovielister.objects.parse.BelongsTo;
-import me.hugomedina.themovielister.objects.parse.Movie;
-import me.hugomedina.themovielister.objects.parse.MovieList;
-import me.hugomedina.themovielister.objects.parse.SubscribedTo;
-import me.hugomedina.themovielister.objects.parse.User;
 
 /**
  * Created by Hugo on 2/2/2016.
@@ -34,14 +27,6 @@ public class MovieListerApplication extends Application{
     public void onCreate() {
         // TODO Auto-generated method stub
         super.onCreate();
-
-        ParseObject.registerSubclass(BelongsTo.class);
-        ParseObject.registerSubclass(Movie.class);
-        ParseObject.registerSubclass(MovieList.class);
-        ParseObject.registerSubclass(SubscribedTo.class);
-        ParseObject.registerSubclass(User.class);
-        Parse.enableLocalDatastore(this);
-        Parse.initialize(this);
 
         checkIfOnline();
 
